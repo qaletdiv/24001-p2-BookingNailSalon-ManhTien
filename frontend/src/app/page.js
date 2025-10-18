@@ -1,0 +1,15 @@
+import Counter from "../components/Counter";
+import StoreProvider from "./StoreProvider";
+
+export default function Home() {
+  return (
+    <>
+      <StoreProvider>
+        <main>
+          <h1>Home</h1>
+          {/* <Counter /> */}
+        </main>
+      </StoreProvider>
+    </>
+  );
+}
