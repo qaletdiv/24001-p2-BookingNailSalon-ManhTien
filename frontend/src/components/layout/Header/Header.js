@@ -19,7 +19,7 @@ const Header = () => {
 
   return (
     <>
-      <header className="fixed w-full shadow-2xs bg-black opacity-90 md:px-12 px-4 py-0 flex justify-between items-center text-neutral-100 z-50">
+      <header className="fixed w-full shadow-2xs bg-black opacity-90 md:px-12 px-2 py-0 flex justify-between items-center text-neutral-100 z-50">
         <Link href={"/"} className="">
           <div className="relative w-24 h-24">
             <Image
