@@ -83,6 +83,12 @@ const Header = () => {
           >
             Contact Us
           </Link>
+          <Link
+            href={"/booking"}
+            className={`px-2 py-1 bg-foreground text-neutral-900 rounded-md`}
+          >
+            Booking Now
+          </Link>
         </nav>
         <button onClick={toggleMenu} className="z-50 lg:hidden">
           <MenuIcon className="size-12" />
@@ -143,6 +149,13 @@ const Header = () => {
             className="hover:text-neutral-300 transition-colors"
           >
             Contact Us
+          </Link>
+          <Link
+            href={"/booking"}
+            onClick={closeMenu}
+            className=" w-3/4 text-center py-2 bg-foreground text-neutral-900 rounded-md"
+          >
+            Booking Now
           </Link>
         </nav>
       </div>
