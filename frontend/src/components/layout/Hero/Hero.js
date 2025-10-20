@@ -2,6 +2,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
+import styles from "./Hero.module.css";
 const images = ["/homepage1.jpeg", "/homepage2.jpeg", "/homepage3.jpeg"];
 const Hero = () => {
   const [index, setIndex] = useState(0);
@@ -14,12 +15,25 @@ const Hero = () => {
   }, [index]);
   return (
     <div className="relative h-screen w-full overflow-hidden">
-      <div className="absolute text-white translate-y-[-50%]  translate-x-[-50%] top-[50%] left-[50%] z-50">
-        <h1 className="text-5xl">Welcome to Luxe Nail Studio</h1>
-        <p>Where elegance is in every touch.</p>
+      <div className="absolute flex flex-col items-center md:items-start gap-4 text-white md:pl-16 translate-y-[-50%] w-full  top-[50%]  z-20">
+        <h1 className="md:text-[64px] text-[44px] md:text-left text-center font-bold text-shadow-lg/30 leading-normal">
+          Welcome to <br />
+          <strong className={`${styles.metal} text-[44px] md:text-[64px]`}>
+            Luxe Nail Studio
+          </strong>
+        </h1>
+        <p className="md:text-[32px] text-[18px] text-shadow-lg/30">
+          Where elegance is in every touch.
+        </p>
+        {/* <Link
+          href={"/booking"}
+          className="px-8 py-4 shadow-lg/50 rounded-xl text-xl text-neutral-900 font-bold bg-foreground"
+        >
+          Book Now
+        </Link> */}
       </div>
       <div
-        className="flex h-full w-full transition-transform duration-500 ease-out"
+        className="flex h-full w-full transition-transform duration-500 ease-out "
         style={{ transform: `translateX(-${index * 100}%)` }}
       >
         {images.map((src, i) => {
@@ -36,14 +50,19 @@ const Hero = () => {
           );
         })}
       </div>
+      <div
+        className="absolute inset-0 z-10 pointer-events-none
+                  backdrop-brightness-60 "
+      />
       <div className="z-50  absolute top-[15%] right-[5%] flex flex-col gap-4">
         <Link
           href="https://facebook.com"
           target="_blank"
           rel="noopener noreferrer"
-          className="size-14 inset-shadow-sm text-background hover:text-foreground duration-300 transition-colors cursor-pointer"
+          className="size-14  text-background hover:text-foreground duration-300 transition-colors cursor-pointer"
         >
           <svg
+            className="drop-shadow-xl/50"
             role="img"
             viewBox="0 0 24 24"
             xmlns="http://www.w3.org/2000/svg"
@@ -59,9 +78,10 @@ const Hero = () => {
           href="https://instagram.com"
           target="_blank"
           rel="noopener noreferrer"
-          className="size-14 inset-shadow-sm text-background hover:text-foreground duration-300 transition-colors cursor-pointer"
+          className="size-14 text-background hover:text-foreground duration-300 transition-colors cursor-pointer"
         >
           <svg
+            className="drop-shadow-xl/50"
             role="img"
             viewBox="0 0 24 24"
             xmlns="http://www.w3.org/2000/svg"

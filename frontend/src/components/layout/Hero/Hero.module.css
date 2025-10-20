@@ -1,0 +1,22 @@
+.metal {
+  /* metallic gradient as text */
+  background: linear-gradient(
+    90deg,
+    #fff8e6 0%,
+    #ffeaa0 12%,
+    #ffd24a 40%,
+    #c38a20 62%,
+    #8b5a08 78%,
+    #f6e3b0 100%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+
+  /* subtle depth */
+  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.35);
+  position: relative;
+  display: inline-block;
+  vertical-align: middle;
+}
