@@ -14,13 +14,17 @@ const Hero = () => {
   }, [index]);
   return (
     <div className="relative h-screen w-full overflow-hidden">
+      <div className="absolute text-white translate-y-[-50%]  translate-x-[-50%] top-[50%] left-[50%] z-50">
+        <h1 className="text-5xl">Welcome to Luxe Nail Studio</h1>
+        <p>Where elegance is in every touch.</p>
+      </div>
       <div
         className="flex h-full w-full transition-transform duration-500 ease-out"
         style={{ transform: `translateX(-${index * 100}%)` }}
       >
         {images.map((src, i) => {
           return (
-            <div key={i} className="relative min-w-full h-full">
+            <div key={i} className="relative  min-w-full h-full">
               <Image
                 src={src}
                 alt={`hero-${i}`}
@@ -32,12 +36,12 @@ const Hero = () => {
           );
         })}
       </div>
-      <div className="z-50 absolute top-[15%] right-[5%] flex flex-col gap-4">
+      <div className="z-50  absolute top-[15%] right-[5%] flex flex-col gap-4">
         <Link
           href="https://facebook.com"
           target="_blank"
           rel="noopener noreferrer"
-          className="size-14 text-background hover:text-foreground duration-300 transition-colors cursor-pointer"
+          className="size-14 inset-shadow-sm text-background hover:text-foreground duration-300 transition-colors cursor-pointer"
         >
           <svg
             role="img"
@@ -55,7 +59,7 @@ const Hero = () => {
           href="https://instagram.com"
           target="_blank"
           rel="noopener noreferrer"
-          className="size-14 text-background hover:text-foreground duration-300 transition-colors cursor-pointer"
+          className="size-14 inset-shadow-sm text-background hover:text-foreground duration-300 transition-colors cursor-pointer"
         >
           <svg
             role="img"
