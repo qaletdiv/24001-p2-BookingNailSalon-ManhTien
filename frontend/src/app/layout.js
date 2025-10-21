@@ -1,11 +1,17 @@
 import "./globals.css";
-import { Geist, Montserrat } from "next/font/google";
+import { Montserrat, Tangerine } from "next/font/google";
 import StoreProvider from "./StoreProvider";
 import Header from "@/components/layout/Header/Header";
 
 const montserrat = Montserrat({
   variable: "--font-montserrat-mono",
   subsets: ["latin"],
+});
+const tangerine = Tangerine({
+  weight: ["400", "700"],
+  subsets: ["latin"],
+  variable: "--font-tangerine",
+  display: "swap",
 });
 export const metadata = {
   title: "Create Next App",
@@ -15,7 +21,9 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body className={` ${montserrat.variable} antialiased`}>
+      <body
+        className={` ${montserrat.variable} ${tangerine.variable} text-black antialiased`}
+      >
         <Header />
         {children}
       </body>
