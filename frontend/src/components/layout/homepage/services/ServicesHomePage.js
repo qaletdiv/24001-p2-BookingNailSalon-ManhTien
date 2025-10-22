@@ -1,5 +1,6 @@
 "use client";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { tangerine } from "@/app/layout";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 const categories = ["pedicure", "manicure", "enhancement", "addon", "waxing"];
@@ -23,9 +24,11 @@ const ServicesHomePage = () => {
     setIndex((i) => (i + 1) % categories.length);
   };
   return (
-    <section className="px-4 md:px-16">
-      <div className="text-center py-8">
-        <h1 className="font-tangerine text-7xl font-extrabold">Our Services</h1>
+    <section className="px-4 md:px-[15%] md:py-16 ">
+      <div className="text-center pb-8">
+        <h1 className={`${tangerine.className} text-7xl font-extrabold`}>
+          Our Services
+        </h1>
         <p className="text-sm">
           Your nails are a blank canvas waiting for creattivity.
         </p>
