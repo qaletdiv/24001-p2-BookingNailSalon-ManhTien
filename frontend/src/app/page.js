@@ -2,6 +2,7 @@ import Hero from "@/components/layout/Hero/Hero";
 
 import StoreProvider from "./StoreProvider";
 import ServicesHomePage from "@/components/layout/homepage/services/ServicesHomePage";
+import AboutHomePage from "@/components/layout/homepage/about/AboutHomePage";
 async function fetchServicesData() {
   const res = await fetch(`${process.env.API_SERVER}/services`);
   if (!res.ok)
@@ -19,6 +20,7 @@ export default async function Home() {
         <main>
           {/* Hero*/}
           <Hero />
+          <AboutHomePage />
           <ServicesHomePage data={services} />
         </main>
       </StoreProvider>
