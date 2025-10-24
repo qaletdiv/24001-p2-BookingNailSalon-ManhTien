@@ -3,6 +3,7 @@ import Hero from "@/components/layout/Hero/Hero";
 import StoreProvider from "./StoreProvider";
 import ServicesHomePage from "@/components/layout/homepage/services/ServicesHomePage";
 import AboutHomePage from "@/components/layout/homepage/about/AboutHomePage";
+import PriceListHomePage from "@/components/layout/homepage/pricelist/PriceListHomePage";
 async function fetchServicesData() {
   const res = await fetch(`${process.env.API_SERVER}/services`);
   if (!res.ok)
@@ -22,6 +23,7 @@ export default async function Home() {
           <Hero />
           <AboutHomePage />
           <ServicesHomePage data={services} />
+          <PriceListHomePage data={services} />
         </main>
       </StoreProvider>
     </>
