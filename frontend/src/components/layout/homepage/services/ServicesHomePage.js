@@ -24,7 +24,7 @@ const ServicesHomePage = () => {
     setIndex((i) => (i + 1) % categories.length);
   };
   return (
-    <section className="px-4 md:px-[15%] py-8 md:py-16 ">
+    <section className="px-4 md:px-[10%] py-8 md:py-16 ">
       <div className="text-center pb-8">
         <h1 className={`${tangerine.className} text-7xl font-extrabold`}>
           Our Services
