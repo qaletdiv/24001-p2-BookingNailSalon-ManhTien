@@ -8,11 +8,13 @@ const AboutHomePage = () => {
   const aboutRef = useRef(null);
 
   useEffect(() => {
+    // copy ref to local variable so cleanup uses the same node
+    const node = aboutRef.current;
+    if (!node) return;
     // 1. Create the observer
     const observer = new IntersectionObserver(
       // 2. Callback function - runs when visibility changes
       ([entry]) => {
-        console.log("Element intersection changed:", entry.isIntersecting);
         if (entry.isIntersecting) {
           setIsVisible(true);
           // Optional: Stop observing after first trigger
@@ -28,14 +30,13 @@ const AboutHomePage = () => {
     );
 
     // 4. Start observing the element
-    if (aboutRef.current) {
-      observer.observe(aboutRef.current);
-    }
+    observer.observe(node);
 
     // 5. Cleanup function - stop observing when component unmounts
     return () => {
-      if (aboutRef.current) {
-        observer.unobserve(aboutRef.current);
+      if (node) {
+        observer.unobserve(node);
+        observer.disconnect();
       }
     };
   }, []); // Empty dependency array = run once on mount
