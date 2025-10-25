@@ -23,10 +23,11 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body
-        className={` ${montserrat.variable} ${tangerine.variable} text-black antialiased`}
+        className={`min-h-screen flex flex-col ${montserrat.variable} ${tangerine.variable} text-black antialiased`}
       >
         <Header />
-        {children}
+        <main className="flex-1">{children}</main>
+
         <Footer />
       </body>
     </html>
