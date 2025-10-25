@@ -5,12 +5,13 @@ import ServicesHomePage from "@/components/layout/homepage/services/ServicesHome
 import AboutHomePage from "@/components/layout/homepage/about/AboutHomePage";
 import PriceListHomePage from "@/components/layout/homepage/pricelist/PriceListHomePage";
 import GalleryHomePage from "@/components/layout/homepage/gallery/GalleryHomePage";
-import Image from "next/image";
+import BookingPage from "@/app/(screens)/booking/page";
 import { fetchServicesData } from "@/functions/fetchServicesData";
+import { fetchStaffData } from "@/functions/fetchStaffData";
 
 export default async function Home() {
   const services = await fetchServicesData();
-
+  const staff = await fetchStaffData();
   return (
     <>
       <StoreProvider>
@@ -21,6 +22,7 @@ export default async function Home() {
         <ServicesHomePage />
         <PriceListHomePage data={services} />
         <GalleryHomePage />
+        <BookingPage servicesData={services} staffData={staff} />
       </StoreProvider>
     </>
   );

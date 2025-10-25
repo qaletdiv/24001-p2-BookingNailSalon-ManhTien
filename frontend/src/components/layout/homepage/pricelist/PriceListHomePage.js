@@ -1,7 +1,7 @@
 import { tangerine } from "@/app/layout";
 import styles from "./pricelist.module.css";
 const PriceListHomePage = ({ data }) => {
-  console.log(data);
+  
   return (
     <section className="bg-black py-16 px-4 md:px-[10%]">
       {/* price list container */}

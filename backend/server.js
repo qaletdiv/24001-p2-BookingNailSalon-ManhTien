@@ -70,6 +70,70 @@ const services = [
     price: 15,
   },
 ];
+
+const staff = [
+  {
+    id: 1,
+    name: "Lina Nguyen",
+    role: "Nail Technician",
+    specialty: ["Acrylic Nails", "Gel Manicure", "Nail Art"],
+    experience: 5,
+    rating: 4.8,
+    available: true,
+    schedule: {
+      monday: ["10:00", "18:00"],
+      tuesday: ["10:00", "18:00"],
+      wednesday: ["Off"],
+      thursday: ["10:00", "18:00"],
+      friday: ["10:00", "18:00"],
+      saturday: ["09:00", "17:00"],
+      sunday: ["Off"]
+    },
+    image: "/images/staff/lina.jpg"
+  },
+  {
+    id: 2,
+    name: "Mia Tran",
+    role: "Senior Nail Artist",
+    specialty: ["3D Design", "Luxury Pedicure", "Custom Nail Sets"],
+    experience: 7,
+    rating: 4.9,
+    available: true,
+    schedule: {
+      monday: ["Off"],
+      tuesday: ["11:00", "19:00"],
+      wednesday: ["11:00", "19:00"],
+      thursday: ["11:00", "19:00"],
+      friday: ["11:00", "19:00"],
+      saturday: ["09:00", "17:00"],
+      sunday: ["09:00", "15:00"]
+    },
+    image: "/images/staff/mia.jpg"
+  },
+  {
+    id: 3,
+    name: "Emma Le",
+    role: "Junior Nail Technician",
+    specialty: ["Classic Manicure", "Pedicure"],
+    experience: 2,
+    rating: 4.5,
+    available: false,
+    schedule: {
+      monday: ["10:00", "18:00"],
+      tuesday: ["10:00", "18:00"],
+      wednesday: ["10:00", "18:00"],
+      thursday: ["Off"],
+      friday: ["10:00", "18:00"],
+      saturday: ["Off"],
+      sunday: ["Off"]
+    },
+    image: "/images/staff/emma.jpg"
+  }
+];
+
+app.get('/api/staff',(req,res,next)=>{
+  res.send(staff)
+})
 app.get("/api/services", (req, res, next) => {
   res.send(services);
 });

@@ -8,13 +8,14 @@ const tangerine = Tangerine({
   subsets: ["latin"],
 });
 
-export default function BookingPage() {
+export default function BookingPage({servicesData,staffData}) {
   const [selected, setSelected] = useState("services");
-  
+  console.log(staffData);
+  console.log(servicesData);
   return (
     <section className="pt-36 flex justify-center h-screen elegant-swirl-pattern">
       <div className="text-center flex flex-col gap-4">
-        <h1 className={`${tangerine.className} text-7xl font-bold`}>
+        <h1 className={`${tangerine.className} md:text-7xl text-5xl font-bold`}>
           Book your appointment
         </h1>
         <div className="flex gap-4 justify-center">
