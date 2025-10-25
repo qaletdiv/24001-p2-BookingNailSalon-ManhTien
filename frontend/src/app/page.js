@@ -13,15 +13,14 @@ export default async function Home() {
   const staff = await fetchStaffData();
   return (
     <>
-      <StoreProvider>
         {/* Hero*/}
-
+        <DataHydrator services={services} staff={staff} />
         <Hero />
         <AboutHomePage />
         <ServicesHomePage />
         <PriceListHomePage data={services} />
         <GalleryHomePage />
-      </StoreProvider>
+      
     </>
   );
 }
