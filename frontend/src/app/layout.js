@@ -2,6 +2,7 @@ import "./globals.css";
 import { Montserrat, Tangerine } from "next/font/google";
 import StoreProvider from "./StoreProvider";
 import Header from "@/components/layout/Header/Header";
+import Footer from "@/components/layout/footer/Footer";
 
 export const montserrat = Montserrat({
   variable: "--font-montserrat-mono",
@@ -22,10 +23,12 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body
-        className={` ${montserrat.variable} ${tangerine.variable} text-black antialiased`}
+        className={`min-h-screen flex flex-col ${montserrat.variable} ${tangerine.variable} text-black antialiased`}
       >
         <Header />
-        {children}
+        <main className="flex-1">{children}</main>
+
+        <Footer />
       </body>
     </html>
   );
