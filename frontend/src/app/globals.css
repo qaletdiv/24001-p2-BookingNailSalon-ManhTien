@@ -1,7 +1,11 @@
 @import url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&family=Tangerine:wght@400;700&display=swap");
 @import "tailwindcss";
 @import "tw-animate-css";
+/* Add this to your globals.css file */
 
+.elegant-swirl-pattern {
+  background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' stroke='%23dfba9f' stroke-opacity='0.1' stroke-width='1.5'%3E%3Cpath d='M50 50c0-13.8-11.2-25-25-25s-25 11.2-25 25 11.2 25 25 25 25-11.2 25-25z'/%3E%3Cpath d='M50 50c0-13.8 11.2-25 25-25s25 11.2 25 25-11.2 25-25 25-25-11.2-25-25z'/%3E%3Cpath d='M50 50c13.8 0 25-11.2 25-25s-11.2-25-25-25-25 11.2-25 25 11.2 25 25 25z'/%3E%3Cpath d='M50 50c-13.8 0-25 11.2-25 25s11.2 25 25 25 25-11.2 25-25-11.2-25-25-25z'/%3E%3C/g%3E%3C/svg%3E");
+}
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
