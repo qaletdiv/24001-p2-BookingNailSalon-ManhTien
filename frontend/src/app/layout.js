@@ -2,6 +2,7 @@ import "./globals.css";
 import { Montserrat, Tangerine } from "next/font/google";
 import StoreProvider from "./StoreProvider";
 import Header from "@/components/layout/Header/Header";
+import Footer from "@/components/layout/footer/Footer";
 
 export const montserrat = Montserrat({
   variable: "--font-montserrat-mono",
@@ -26,6 +27,7 @@ export default function RootLayout({ children }) {
       >
         <Header />
         {children}
+        <Footer />
       </body>
     </html>
   );
