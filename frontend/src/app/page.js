@@ -17,7 +17,7 @@ export default async function Home() {
         <Hero />
         <AboutHomePage />
         <ServicesHomePage />
-        <PriceListHomePage data={services} />
+        {/* <PriceListHomePage  /> */}
         <GalleryHomePage />
       
     </>

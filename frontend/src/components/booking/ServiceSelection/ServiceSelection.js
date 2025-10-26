@@ -1,8 +1,11 @@
 "use client";
 import { useState } from "react";
-function ServiceSelection({ servicesData ,staffData}) {
+import { useSelector } from "react-redux";
+function ServiceSelection() {
     const [selected, setSelected] = useState("services");
-
+    const services = useSelector((state) => state.services.services);
+    const staff = useSelector((state) => state.staff.staff);
+    console.log(services);
   return (
     <div>
         <div className="flex gap-4 justify-center">
