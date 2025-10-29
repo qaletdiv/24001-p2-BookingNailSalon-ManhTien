@@ -3,9 +3,9 @@ import { useState } from "react";
 import { useSelector } from "react-redux";
 import { ChevronLeft } from "lucide-react";
 import SelectServices from "./SelectServices";
-function ServiceSelection() {
+function ServiceSelection({ servicesData, staffData }) {
   const [selected, setSelected] = useState("services");
-  const services = useSelector((state) => state.services.services);
+  const services = servicesData;
   const staff = useSelector((state) => state.staff.staff);
 
   // const category = services.reduce((acc, service) => {

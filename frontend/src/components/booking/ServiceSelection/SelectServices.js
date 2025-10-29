@@ -41,8 +41,15 @@ const SelectServices = ({ servicesData }) => {
               />
             </button>
 
-            {isOpen && (
-              <ul id={panelId}>
+            {/* Smooth expand/collapse instead of conditional unmount */}
+            <div
+              id={panelId}
+              className={`grid transition-all duration-300 ease-out motion-reduce:transition-none ${
+                isOpen ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"
+              }`}
+              aria-hidden={!isOpen}
+            >
+              <ul className="overflow-hidden">
                 {cat.items.map((service) => {
                   const isSelected = !!selected[service.id];
                   const inputId = `service-${service.id}`;
@@ -91,7 +98,7 @@ const SelectServices = ({ servicesData }) => {
                   );
                 })}
               </ul>
-            )}
+            </div>
           </div>
         );
       })}
