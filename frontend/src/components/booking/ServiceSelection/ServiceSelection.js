@@ -1,6 +1,8 @@
 "use client";
 import { useState } from "react";
 import { useSelector } from "react-redux";
+import { ChevronLeft } from "lucide-react";
+import SelectServices from "./SelectServices";
 function ServiceSelection() {
   const [selected, setSelected] = useState("services");
   const services = useSelector((state) => state.services.services);
@@ -30,7 +32,7 @@ function ServiceSelection() {
   );
 
   return (
-    <div>
+    <div className="h-full">
       <div className="flex gap-4 justify-center">
         <button
           className={`${
@@ -54,27 +56,7 @@ function ServiceSelection() {
         </button>
       </div>
       {selected === "services" ? (
-        <div className="mt-8">
-          {categories.map((cat) => (
-            <div key={cat.name} className="mb-6">
-              <div className="flex text-2xl font-bold mb-4 border-2 border-foreground w-full px-4 py-2 rounded-lg">
-                <span>{cat.name}</span>
-                <span></span>
-              </div>
-              <ul>
-                {cat.items.map((service) => (
-                  <li
-                    key={service.id}
-                    className="flex justify-between border-b border-gray-300 py-2"
-                  >
-                    <span>{service.name}</span>
-                    <span>${service.price.toFixed(2)}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))}
-        </div>
+        <SelectServices servicesData={categories} />
       ) : (
         <div className="mt-8">
           <h2 className="text-2xl font-bold mb-4">Staff Members</h2>
