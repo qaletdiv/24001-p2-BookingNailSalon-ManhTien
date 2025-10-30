@@ -3,6 +3,7 @@ import { useState } from "react";
 import { Check, Clock10Icon } from "lucide-react";
 import { addService } from "@/redux/slices/bookingSlice";
 import { useAppDispatch } from "@/redux/hooks";
+import { removeService } from "@/redux/slices/bookingSlice";
 const ServiceList = ({ servicesData }) => {
   const dispatch = useAppDispatch();
   // Selected services: id -> boolean
@@ -10,8 +11,8 @@ const ServiceList = ({ servicesData }) => {
   const toggle = (id) => {
     setSelected((prev) => ({ ...prev, [id]: !prev[id] }));
   };
-  const handleAddService = (service) => {
-    dispatch(addService());
+  const handleAddService = (id, name, duration) => {
+    dispatch(addService({ id, name, duration }));
   };
   return (
     <ul className="overflow-hidden">
@@ -41,9 +42,15 @@ const ServiceList = ({ servicesData }) => {
                 type="checkbox"
                 className="sr-only"
                 checked={isSelected}
-                onChange={() => toggle(service.id)}
+                onChange={() => {
+                  if (isSelected) {
+                    dispatch(removeService({ id: service.id }));
+                  } else {
+                    handleAddService(service.id, service.name, service.duration,service.price);
+                  }
+                  toggle(service.id);
+                }}
                 aria-label={`Select ${service.name}`}
-                onClick={handleAddService(service.id)}
               />
               <span
                 aria-hidden
