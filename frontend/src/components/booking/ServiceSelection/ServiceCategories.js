@@ -20,7 +20,7 @@ const ServiceCategories = ({ servicesData }) => {
           .toLowerCase()}`;
 
         return (
-          <div key={cat.name} className="mb-6 md:w-3/4 mx-auto">
+          <div key={cat.name} className="mb-6 md:w-3/4 lg:w-1/2 mx-auto">
             <button
               onClick={() => toggleCat(cat.name)}
               className="flex justify-between items-center text-2xl font-bold mb-4 border-2 border-foreground w-full px-4 py-2 rounded-lg"
