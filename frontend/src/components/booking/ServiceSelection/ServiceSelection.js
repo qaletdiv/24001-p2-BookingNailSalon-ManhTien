@@ -2,11 +2,12 @@
 import { useState } from "react";
 import { useSelector } from "react-redux";
 import { ChevronLeft } from "lucide-react";
-import SelectServices from "./SelectServices";
+import ServiceCategories from "./ServiceCategories";
+import StaffList from "./StaffList";
 function ServiceSelection({ servicesData, staffData }) {
   const [selected, setSelected] = useState("services");
   const services = servicesData;
-  const staff = useSelector((state) => state.staff.staff);
+  const staff = staffData;
 
   // const category = services.reduce((acc, service) => {
   //   const existingCategory = acc.find((cat) => cat.name === service.category);
@@ -56,11 +57,9 @@ function ServiceSelection({ servicesData, staffData }) {
         </button>
       </div>
       {selected === "services" ? (
-        <SelectServices servicesData={categories} />
+        <ServiceCategories servicesData={categories} />
       ) : (
-        <div className="mt-8">
-          <h2 className="text-2xl font-bold mb-4">Staff Members</h2>
-        </div>
+        <StaffList staffData={staff} />
       )}
     </div>
   );

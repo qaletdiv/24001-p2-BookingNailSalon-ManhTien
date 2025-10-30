@@ -24,8 +24,20 @@ const bookingSlice = createSlice({
   initialState,
   reducers: {
     // Add your reducers here
+    addService: (state, action) => {
+      state.selectedServices.push(action.payload);
+    },
+    removeService: (state, action) => {
+      state.selectedServices = state.selectedServices.filter(
+        (service) => service.id !== action.payload.id
+      );
+    },
+    clearServices: (state) => {
+      state.selectedServices = [];
+    },
   },
 });
 
-export const {} = bookingSlice.actions;
+export const { addService, removeService, clearServices } =
+  bookingSlice.actions;
 export default bookingSlice.reducer;

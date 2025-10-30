@@ -10,16 +10,7 @@ const tangerine = Tangerine({
 
 export default async function BookingPage() {
   const servicesData = await fetchServicesData();
-  console.log(servicesData);
+
   const staffData = await fetchStaffData();
-  return (
-    <section className="pt-36 h-full flex justify-center  elegant-swirl-pattern">
-      <div className="text-center flex flex-col gap-4">
-        <h1 className={`${tangerine.className} md:text-7xl text-5xl font-bold`}>
-          Book your appointment
-        </h1>
-        <ServiceSelection servicesData={servicesData} staffData={staffData} />
-      </div>
-    </section>
-  );
+  return <ServiceSelection servicesData={servicesData} staffData={staffData} />;
 }
