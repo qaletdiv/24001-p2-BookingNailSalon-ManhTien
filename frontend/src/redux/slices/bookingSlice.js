@@ -1,22 +1,26 @@
 import { createSlice } from "@reduxjs/toolkit";
-
 const initialState = {
-  bookings: [],
-  currentBooking: null,
+  bookings: [], // All completed bookings
+  currentBooking: {
+    // Current booking in progress
+    step: "services", // 'services' | 'staff' | 'datetime' | 'customer' | 'review' | 'confirmed'
+    services: [], // Format: { serviceId, serviceName, duration, price }
+    staff: [], // Format: { staffId, staffName }
+    selectedDate: null,
+    selectedTimeSlot: null,
+    availableTimeSlots: [],
+    customer: {
+      name: "",
+      phone: "",
+      email: "",
+    },
+    totalDuration: 0,
+    totalPrice: 0,
+    notes: "",
+    isValid: false, // Whether current step is valid
+  },
   loading: false,
   error: null,
-  selectedDate: null,
-  availableTimeSlots: [],
-  selectedServices: [],
-  customer: {
-    name: "",
-    phone: "",
-    email: "",
-  },
-  staff: "",
-  totalDuration: 0,
-  totalPrice: 0,
-  notes: "",
 };
 
 const bookingSlice = createSlice({
@@ -25,10 +29,10 @@ const bookingSlice = createSlice({
   reducers: {
     // Add your reducers here
     addService: (state, action) => {
-      state.selectedServices.push(action.payload);
+      state.currentBooking.services.push(action.payload);
     },
     removeService: (state, action) => {
-      state.selectedServices = state.selectedServices.filter(
+      state.currentBooking.services = state.currentBooking.services.filter(
         (service) => service.id !== action.payload.id
       );
     },

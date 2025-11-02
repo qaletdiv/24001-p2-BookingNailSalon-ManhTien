@@ -1,7 +1,6 @@
 "use client";
 import { useState } from "react";
 import { useSelector } from "react-redux";
-import { ChevronLeft } from "lucide-react";
 import ServiceCategories from "./ServiceCategories";
 import StaffList from "./StaffList";
 function ServiceSelection({ servicesData, staffData }) {
@@ -9,15 +8,6 @@ function ServiceSelection({ servicesData, staffData }) {
   const services = servicesData;
   const staff = staffData;
 
-  // const category = services.reduce((acc, service) => {
-  //   const existingCategory = acc.find((cat) => cat.name === service.category);
-  //   if (existingCategory) {
-  //     existingCategory.items.push(service);
-  //   } else {
-  //     acc.push({ name: service.category, items: [service] });
-  //   }
-  //   return acc;
-  // }, []);
   const categories = Array.from(
     services
       .reduce((map, service) => {
