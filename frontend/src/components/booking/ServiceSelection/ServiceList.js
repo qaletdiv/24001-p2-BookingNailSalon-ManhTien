@@ -5,24 +5,21 @@ import { addService } from "@/redux/slices/bookingSlice";
 import { useAppDispatch } from "@/redux/hooks";
 import { removeService } from "@/redux/slices/bookingSlice";
 import { useRouter } from "next/navigation";
+
+import { setStep } from "@/redux/slices/bookingSlice";
 const ServiceList = ({ servicesData }) => {
   const router = useRouter();
   const dispatch = useAppDispatch();
   // Selected services: id -> boolean
-  const [selected, setSelected] = useState({});
-  const toggle = (id) => {
-    setSelected((prev) => ({ ...prev, [id]: !prev[id] }));
-  };
-  const handleAddService = (id, name, duration) => {
-    dispatch(addService({ id, name, duration }));
+
+  const handleAddService = (id, name, duration, price) => {
+    dispatch(addService({ id, name, duration, price: Number(price) }));
+    dispatch(setStep("staff"));
     router.push("/booking/staff");
   };
   return (
     <ul className="overflow-hidden">
       {servicesData.map((service) => {
-        const isSelected = !!selected[service.id];
-        const inputId = `service-${service.id}`;
-
         return (
           <li
             key={service.id}
@@ -57,17 +54,12 @@ const ServiceList = ({ servicesData }) => {
               /> */}
             <button
               onClick={() => {
-                if (isSelected) {
-                  dispatch(removeService({ id: service.id }));
-                } else {
-                  handleAddService(
-                    service.id,
-                    service.name,
-                    service.duration,
-                    service.price
-                  );
-                }
-                toggle(service.id);
+                handleAddService(
+                  service.id,
+                  service.name,
+                  service.duration,
+                  service.price
+                );
               }}
               className="bg-foreground text-neutral-900 px-4 py-2 rounded-full"
             >

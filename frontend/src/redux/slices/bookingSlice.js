@@ -4,8 +4,9 @@ const initialState = {
   currentBooking: {
     // Current booking in progress
     step: "services", // 'services' | 'staff' | 'datetime' | 'customer' | 'review' | 'confirmed'
-    services: [], // Format: { serviceId, serviceName, duration, price }
-    staff: [], // Format: { staffId, staffName }
+    currentSelected: [], // Format: { serviceId, serviceName, duration, price }
+    services: {}, // Format: { serviceId, serviceName, duration, price }
+    staff: {}, // Format: { staffId, staffName }
     selectedDate: null,
     selectedTimeSlot: null,
     availableTimeSlots: [],
@@ -29,19 +30,47 @@ const bookingSlice = createSlice({
   reducers: {
     // Add your reducers here
     addService: (state, action) => {
-      state.currentBooking.services.push(action.payload);
+      state.currentBooking.services = action.payload;
     },
-    removeService: (state, action) => {
-      state.currentBooking.services = state.currentBooking.services.filter(
-        (service) => service.id !== action.payload.id
-      );
-    },
+
     clearServices: (state) => {
-      state.selectedServices = [];
+      state.currentBooking.services = {};
+    },
+    addStaff: (state, action) => {
+      state.currentBooking.staff = action.payload;
+    },
+
+    clearStaff: (state) => {
+      state.currentBooking.staff = {};
+    },
+    setCurrentSelected: (state, action) => {
+      state.currentBooking.currentSelected.push(action.payload);
+    },
+    removeCurrentSelected: (state, action) => {
+      state.currentBooking.currentSelected =
+        state.currentBooking.currentSelected.filter(
+          (selected) => selected.id !== action.payload.id
+        );
+    },
+    clearCurrentSelected: (state) => {
+      state.currentBooking.currentSelected = [];
+    },
+    setStep: (state, action) => {
+      state.currentBooking.step = action.payload;
     },
   },
 });
 
-export const { addService, removeService, clearServices } =
-  bookingSlice.actions;
+export const {
+  addService,
+  removeService,
+  clearServices,
+  addStaff,
+  removeStaff,
+  clearStaff,
+  setCurrentSelected,
+  removeCurrentSelected,
+  clearCurrentSelected,
+  setStep,
+} = bookingSlice.actions;
 export default bookingSlice.reducer;
