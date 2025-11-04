@@ -4,7 +4,9 @@ import { Check, Clock10Icon } from "lucide-react";
 import { addService } from "@/redux/slices/bookingSlice";
 import { useAppDispatch } from "@/redux/hooks";
 import { removeService } from "@/redux/slices/bookingSlice";
+import { useRouter } from "next/navigation";
 const ServiceList = ({ servicesData }) => {
+  const router = useRouter();
   const dispatch = useAppDispatch();
   // Selected services: id -> boolean
   const [selected, setSelected] = useState({});
@@ -13,6 +15,7 @@ const ServiceList = ({ servicesData }) => {
   };
   const handleAddService = (id, name, duration) => {
     dispatch(addService({ id, name, duration }));
+    router.push("/booking/staff");
   };
   return (
     <ul className="overflow-hidden">
@@ -33,11 +36,11 @@ const ServiceList = ({ servicesData }) => {
               </span>
             </div>
 
-            <label
+            {/* <label
               htmlFor={inputId}
               className="inline-flex items-center cursor-pointer select-none rounded-full"
-            >
-              <input
+            > */}
+            {/* <input
                 id={inputId}
                 type="checkbox"
                 className="sr-only"
@@ -51,8 +54,26 @@ const ServiceList = ({ servicesData }) => {
                   toggle(service.id);
                 }}
                 aria-label={`Select ${service.name}`}
-              />
-              <span
+              /> */}
+            <button
+              onClick={() => {
+                if (isSelected) {
+                  dispatch(removeService({ id: service.id }));
+                } else {
+                  handleAddService(
+                    service.id,
+                    service.name,
+                    service.duration,
+                    service.price
+                  );
+                }
+                toggle(service.id);
+              }}
+              className="bg-foreground text-neutral-900 px-4 py-2 rounded-full"
+            >
+              Book Service
+            </button>
+            {/* <span
                 aria-hidden
                 className={`grid place-items-center h-6 w-6 rounded-full border-2 border-foreground transition-colors ${
                   isSelected ? "bg-neutral-900" : ""
@@ -65,7 +86,7 @@ const ServiceList = ({ servicesData }) => {
                   strokeWidth={3}
                 />
               </span>
-            </label>
+            </label> */}
           </li>
         );
       })}
