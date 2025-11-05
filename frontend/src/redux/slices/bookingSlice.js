@@ -49,7 +49,7 @@ const bookingSlice = createSlice({
     removeCurrentSelected: (state, action) => {
       state.currentBooking.currentSelected =
         state.currentBooking.currentSelected.filter(
-          (selected) => selected.id !== action.payload.id
+          (selected) => selected.id !== action.payload
         );
     },
     clearCurrentSelected: (state) => {

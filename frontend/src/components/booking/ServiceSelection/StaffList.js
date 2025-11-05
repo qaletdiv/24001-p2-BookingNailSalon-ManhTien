@@ -4,6 +4,7 @@ import { useAppDispatch } from "@/redux/hooks";
 import { useRouter } from "next/navigation";
 import { setStep, setCurrentSelected } from "@/redux/slices/bookingSlice";
 import { useSelector } from "react-redux";
+import { v4 as uuidv4 } from "uuid";
 const StaffList = ({ staffData }) => {
   const dispatch = useAppDispatch();
   const { services } = useSelector((state) => state.booking.currentBooking);
@@ -12,6 +13,7 @@ const StaffList = ({ staffData }) => {
     dispatch(addStaff({ id, name }));
     dispatch(
       setCurrentSelected({
+        id: uuidv4(),
         ServiceId: services.id,
         ServiceName: services.name,
         StaffId: id,

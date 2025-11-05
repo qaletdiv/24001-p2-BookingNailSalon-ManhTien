@@ -1,6 +1,6 @@
 "use client";
 import { useSelector } from "react-redux";
-import { clearStaff } from "@/redux/slices/bookingSlice";
+import { clearStaff, removeCurrentSelected } from "@/redux/slices/bookingSlice";
 import { clearServices } from "@/redux/slices/bookingSlice";
 import { useAppDispatch } from "@/redux/hooks";
 import { useEffect } from "react";
@@ -13,6 +13,9 @@ const ReviewList = () => {
     dispatch(clearServices());
     dispatch(clearStaff());
   }, [dispatch]);
+  const handleRemoveService = (id) => {
+    dispatch(removeCurrentSelected(id));
+  };
   return (
     <>
       <div className="my-4 lg:w-1/2 md:w-[500px] mx-auto text-center">
@@ -24,9 +27,9 @@ const ReviewList = () => {
         </p>
       </div>
       <div className="flex flex-col gap-4 w-full">
-        {currentSelected.map((selected, idx) => (
+        {currentSelected.map((selected) => (
           <div
-            key={idx}
+            key={selected.id}
             className="lg:w-3/4 md:w-[500px] w-full mx-auto shadow-md flex  justify-between items-center bg-white border border-gray-300 text-neutral-900 p-4 rounded-lg"
           >
             <div className="flex flex-col justify-between items-start">
@@ -50,7 +53,10 @@ const ReviewList = () => {
               <button className="bg-foreground text-neutral-900 px-4 py-2 rounded-full text-sm md:text-base">
                 Change Technician
               </button>
-              <button className="bg-foreground text-neutral-900 px-4 py-2 rounded-full text-sm md:text-base">
+              <button
+                onClick={() => handleRemoveService(selected.id)}
+                className="bg-foreground text-neutral-900 px-4 py-2 rounded-full text-sm md:text-base"
+              >
                 Remove
               </button>
             </div>
