@@ -4,15 +4,20 @@ import { clearStaff, removeCurrentSelected } from "@/redux/slices/bookingSlice";
 import { clearServices } from "@/redux/slices/bookingSlice";
 import { useAppDispatch } from "@/redux/hooks";
 import { useEffect } from "react";
+import { useRouter } from "next/navigation";
 const ReviewList = () => {
   const dispatch = useAppDispatch();
+  const router = useRouter();
   const { currentSelected } = useSelector(
     (state) => state.booking.currentBooking
   );
   useEffect(() => {
     dispatch(clearServices());
     dispatch(clearStaff());
-  }, [dispatch]);
+    if (currentSelected.length === 0) {
+      router.push("/booking/services");
+    }
+  }, [dispatch, currentSelected, router]);
   const handleRemoveService = (id) => {
     dispatch(removeCurrentSelected(id));
   };
@@ -39,20 +44,20 @@ const ReviewList = () => {
               <span className="text-lg text-gray-700">
                 Technician: {selected.StaffName}
               </span>
-              <span className="text-lg text-gray-700">
+              {/* <span className="text-lg text-gray-700">
                 Duration: {selected.duration} minutes
               </span>
               <span className="text-lg text-gray-700">
                 Price: ${selected.price}
-              </span>
+              </span> */}
             </div>
             <div className="flex flex-col gap-2">
-              <button className="bg-foreground text-neutral-900 px-4 py-2 rounded-full text-sm md:text-base">
+              {/* <button className="bg-foreground text-neutral-900 px-4 py-2 rounded-full text-sm md:text-base">
                 Change Service
               </button>
               <button className="bg-foreground text-neutral-900 px-4 py-2 rounded-full text-sm md:text-base">
                 Change Technician
-              </button>
+              </button> */}
               <button
                 onClick={() => handleRemoveService(selected.id)}
                 className="bg-foreground text-neutral-900 px-4 py-2 rounded-full text-sm md:text-base"
@@ -62,6 +67,20 @@ const ReviewList = () => {
             </div>
           </div>
         ))}
+        <div className="flex justify-center items-center gap-4 mt-4 lg:w-3/4  md:w-[80%] w-full mx-auto">
+          <button
+            onClick={() => router.push("/booking/services")}
+            className="bg-foreground text-base md:text-xl w-1/2 md:w-3/4 font-bold text-neutral-900 px-4 py-2 rounded-full "
+          >
+            Add more services
+          </button>
+          <button
+            onClick={() => router.push("/booking/datetime")}
+            className="bg-foreground text-base md:text-xl w-1/2 md:w-3/4 font-bold text-neutral-900 px-4 py-2 rounded-full "
+          >
+            Next
+          </button>
+        </div>
       </div>
     </>
   );
