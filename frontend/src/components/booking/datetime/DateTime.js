@@ -1,11 +1,15 @@
 "use client";
 import { Calendar } from "@/components/ui/calendar";
 import { useState } from "react";
-
+import { setTime } from "@/redux/slices/bookingSlice";
 const DateTime = () => {
   const [date, setDate] = useState(new Date());
   const isDateDisabled = (date) => date <= new Date();
   const [time, setTime] = useState(null);
+  const handleTimeSelection = (time) => {
+    setTime(time);
+    dispatch(setTime(time));
+  };
   return (
     <div className="flex md:flex-row w-full flex-col gap-4 justify-start items-start">
       <Calendar
@@ -222,6 +226,12 @@ const DateTime = () => {
               onClick={() => setTime("4:30 PM")}
             >
               4:30 PM
+            </button>
+            <button
+              className=" py-2 md:w-[78px] w-full  text-center rounded-md bg-foreground text-neutral-900"
+              onClick={() => setTime("4:45 PM")}
+            >
+              4:45 PM
             </button>
             <button
               className=" py-2 md:w-[78px] w-full  text-center rounded-md bg-foreground text-neutral-900"
