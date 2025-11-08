@@ -5,7 +5,7 @@ import { clearServices } from "@/redux/slices/bookingSlice";
 import { useAppDispatch } from "@/redux/hooks";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import AddMoreServices from "./addmoreservices/AddMoreServices";
+import AddMoreServices from "./addmoreervices/AddMoreServices";
 const ReviewList = () => {
   const [moreServices, setMoreServices] = useState(false);
   const dispatch = useAppDispatch();
@@ -25,6 +25,9 @@ const ReviewList = () => {
   };
   const handleAddMoreServices = () => {
     setMoreServices(true);
+  };
+  const handleCloseMoreServices = () => {
+    setMoreServices(false);
   };
   return (
     <>
@@ -84,7 +87,7 @@ const ReviewList = () => {
           </button>
         </div>
       </div>
-      {moreServices && <AddMoreServices />}
+      {moreServices && <AddMoreServices onClose={handleCloseMoreServices} />}
     </>
   );
 };

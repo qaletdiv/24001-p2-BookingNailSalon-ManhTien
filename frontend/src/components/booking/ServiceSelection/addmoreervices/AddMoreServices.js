@@ -7,20 +7,29 @@ import { removeService } from "@/redux/slices/bookingSlice";
 import { useAppDispatch } from "@/redux/hooks";
 import ServiceCategories from "../ServiceCategories";
 import ServiceList from "../ServiceList";
-const AddMoreServices = ({}) => {
+const AddMoreServices = ({ onClose }) => {
+  // State for closing animation
   const [isClosing, setIsClosing] = useState(false);
+  // Get services data from redux
   const servicesData = useSelector((state) => state.services.services);
+  // Get current selected services from redux
   const { currentSelected } = useSelector(
     (state) => state.booking.currentBooking
   );
+  // State for open categories
   const [openCats, setOpenCats] = useState({});
-
+  // Toggle category open state
   const toggleCat = (name) => {
     setOpenCats((prev) => ({ ...prev, [name]: !prev[name] }));
   };
-
+  // Filter out services that are already selected
+  const filteredServices = servicesData.filter(
+    (service) =>
+      !currentSelected.some((selected) => selected.ServiceId === service.id)
+  );
+  // Create categories from filtered services
   const categories = Array.from(
-    servicesData
+    filteredServices
       .reduce((map, service) => {
         const raw = service.category ?? "Uncategorized";
         const key = raw.trim().toLowerCase();
@@ -32,11 +41,12 @@ const AddMoreServices = ({}) => {
       }, new Map())
       .values()
   );
+  // Handle close
   const handleClose = () => {
     setIsClosing(true);
     // Wait for animation to complete before calling onClose
     setTimeout(() => {
-      console.log("closed");
+      onClose();
     }, 300); // Match the animation duration
   };
 
