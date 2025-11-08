@@ -1,0 +1,127 @@
+"use client";
+import { useState } from "react";
+import { useSelector } from "react-redux";
+import { ChevronLeft } from "lucide-react";
+import { X } from "lucide-react";
+import { removeService } from "@/redux/slices/bookingSlice";
+import { useAppDispatch } from "@/redux/hooks";
+import ServiceCategories from "../ServiceCategories";
+import ServiceList from "../ServiceList";
+const AddMoreServices = ({}) => {
+  const [isClosing, setIsClosing] = useState(false);
+  const servicesData = useSelector((state) => state.services.services);
+  const { currentSelected } = useSelector(
+    (state) => state.booking.currentBooking
+  );
+  const [openCats, setOpenCats] = useState({});
+
+  const toggleCat = (name) => {
+    setOpenCats((prev) => ({ ...prev, [name]: !prev[name] }));
+  };
+
+  const categories = Array.from(
+    servicesData
+      .reduce((map, service) => {
+        const raw = service.category ?? "Uncategorized";
+        const key = raw.trim().toLowerCase();
+        if (!map.has(key)) {
+          map.set(key, { name: raw.trim(), items: [] });
+        }
+        map.get(key).items.push(service);
+        return map;
+      }, new Map())
+      .values()
+  );
+  const handleClose = () => {
+    setIsClosing(true);
+    // Wait for animation to complete before calling onClose
+    setTimeout(() => {
+      console.log("closed");
+    }, 300); // Match the animation duration
+  };
+
+  // Close on overlay click
+  const handleOverlayClick = (e) => {
+    if (e.target.id === "overlay") {
+      handleClose();
+    }
+  };
+
+  return (
+    <>
+      <div
+        id="overlay"
+        onClick={handleOverlayClick}
+        className={`fixed top-0 left-0 w-full h-full bg-black opacity-50 z-10 transition-opacity duration-300 ${
+          isClosing ? "opacity-0" : "opacity-50"
+        } ${!isClosing ? "animate-in fade-in" : "animate-out fade-out"}`}
+      ></div>
+      <div
+        className={`pt-8 z-100 px-4 fixed bottom-0 left-0 w-full h-3/4 bg-white rounded-t-3xl shadow-2xl transition-transform duration-300 ease-out ${
+          isClosing
+            ? "animate-out slide-out-to-bottom"
+            : "animate-in slide-in-from-bottom"
+        }`}
+      >
+        <button
+          onClick={handleClose}
+          className="absolute top-4 left-4 z-20 p-2 hover:bg-gray-100 rounded-full transition-colors"
+          aria-label="Close"
+        >
+          <X className="size-8 text-gray-700" />
+        </button>
+        <h2 className="text-2xl font-bold">Select Services</h2>
+        <div className="mt-8">
+          {categories.map((cat) => {
+            const isOpen = !!openCats[cat.name]; // closed by default
+            const panelId = `services-${cat.name
+              .replace(/\s+/g, "-")
+              .toLowerCase()}`;
+
+            return (
+              <div key={cat.name} className="mb-6 md:w-3/4 lg:w-1/2 mx-auto">
+                <button
+                  onClick={() => toggleCat(cat.name)}
+                  className="flex justify-between items-center text-2xl font-bold mb-4 border-2 border-foreground w-full px-4 py-2 rounded-lg"
+                  aria-expanded={isOpen}
+                  aria-controls={panelId}
+                >
+                  <span>{cat.name}</span>
+                  <ChevronLeft
+                    className={`size-8 transition-transform ${
+                      isOpen ? "-rotate-90" : "rotate-0"
+                    }`}
+                  />
+                </button>
+
+                {/* Smooth expand/collapse instead of conditional unmount */}
+                <div
+                  id={panelId}
+                  className={`grid transition-all duration-300 ease-out motion-reduce:transition-none ${
+                    isOpen
+                      ? "grid-rows-[1fr] opacity-100"
+                      : "grid-rows-[0fr] opacity-0"
+                  }`}
+                  aria-hidden={!isOpen}
+                >
+                  <div className="overflow-hidden grid lg:w-3/4 md:w-[500px] w-full mx-auto grid-cols-1 md:grid-cols-2  gap-4 mt-8">
+                    {cat.items.map((service) => (
+                      <div
+                        key={service.id}
+                        className="shadow-md flex justify-between items-center bg-foreground text-neutral-900 p-4 rounded-lg"
+                      >
+                        <span>{service.name}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    </>
+  );
+};
+
+export default AddMoreServices;

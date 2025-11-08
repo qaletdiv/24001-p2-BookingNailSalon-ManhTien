@@ -5,6 +5,7 @@ import { clearServices } from "@/redux/slices/bookingSlice";
 import { useAppDispatch } from "@/redux/hooks";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import AddMoreServices from "./addmoreservices/AddMoreServices";
 const ReviewList = () => {
   const [moreServices, setMoreServices] = useState(false);
   const dispatch = useAppDispatch();
@@ -83,12 +84,7 @@ const ReviewList = () => {
           </button>
         </div>
       </div>
-      {moreServices && (
-        <div
-          id="more-services"
-          className="flex justify-center items-center gap-4 mt-4 lg:w-3/4  md:w-[80%] w-full mx-auto"
-        ></div>
-      )}
+      {moreServices && <AddMoreServices />}
     </>
   );
 };
