@@ -3,9 +3,10 @@ import { useSelector } from "react-redux";
 import { clearStaff, removeCurrentSelected } from "@/redux/slices/bookingSlice";
 import { clearServices } from "@/redux/slices/bookingSlice";
 import { useAppDispatch } from "@/redux/hooks";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 const ReviewList = () => {
+  const [moreServices, setMoreServices] = useState(false);
   const dispatch = useAppDispatch();
   const router = useRouter();
   const { currentSelected } = useSelector(
@@ -20,6 +21,9 @@ const ReviewList = () => {
   }, [dispatch, currentSelected, router]);
   const handleRemoveService = (id) => {
     dispatch(removeCurrentSelected(id));
+  };
+  const handleAddMoreServices = () => {
+    setMoreServices(true);
   };
   return (
     <>
@@ -69,19 +73,22 @@ const ReviewList = () => {
         ))}
         <div className="flex justify-center items-center gap-4 mt-4 lg:w-3/4  md:w-[80%] w-full mx-auto">
           <button
-            onClick={() => router.push("/booking/services")}
+            onClick={handleAddMoreServices}
             className="bg-foreground text-base md:text-xl w-1/2 md:w-3/4 font-bold text-neutral-900 px-4 py-2 rounded-full "
           >
             Add more services
           </button>
-          <button
-            onClick={() => router.push("/booking/datetime")}
-            className="bg-foreground text-base md:text-xl w-1/2 md:w-3/4 font-bold text-neutral-900 px-4 py-2 rounded-full "
-          >
+          <button className="bg-foreground text-base md:text-xl w-1/2 md:w-3/4 font-bold text-neutral-900 px-4 py-2 rounded-full ">
             Next
           </button>
         </div>
       </div>
+      {moreServices && (
+        <div
+          id="more-services"
+          className="flex justify-center items-center gap-4 mt-4 lg:w-3/4  md:w-[80%] w-full mx-auto"
+        ></div>
+      )}
     </>
   );
 };
