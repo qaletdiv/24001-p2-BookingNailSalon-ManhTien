@@ -3,14 +3,23 @@
 import { useState } from "react";
 import { ChevronLeft, Check, Clock10Icon } from "lucide-react";
 import ServiceList from "./ServiceList";
+import { addService } from "@/redux/slices/bookingSlice";
+import { setStep } from "@/redux/slices/bookingSlice";
+import { useRouter } from "next/navigation";
 const ServiceCategories = ({ servicesData }) => {
+  const router = useRouter();
+  const dispatch = useAppDispatch();
   // Category open state: category name -> boolean
   const [openCats, setOpenCats] = useState({});
 
   const toggleCat = (name) => {
     setOpenCats((prev) => ({ ...prev, [name]: !prev[name] }));
   };
-
+  const handleAddService = (id, name, duration, price) => {
+    dispatch(addService({ id, name, duration, price: Number(price) }));
+    dispatch(setStep("staff"));
+    router.push("/booking/staff");
+  };
   return (
     <div className="mt-8">
       {servicesData.map((cat) => {
@@ -45,7 +54,10 @@ const ServiceCategories = ({ servicesData }) => {
               }`}
               aria-hidden={!isOpen}
             >
-              <ServiceList servicesData={cat.items} />
+              <ServiceList
+                servicesData={cat.items}
+                handleAddService={handleAddService}
+              />
             </div>
           </div>
         );

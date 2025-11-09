@@ -5,7 +5,7 @@ import { clearServices } from "@/redux/slices/bookingSlice";
 import { useAppDispatch } from "@/redux/hooks";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import AddMoreServices from "./addmoreervices/AddMoreServices";
+import AddMoreServices from "./addmoreservices/AddMoreServices";
 const ReviewList = () => {
   const [moreServices, setMoreServices] = useState(false);
   const dispatch = useAppDispatch();

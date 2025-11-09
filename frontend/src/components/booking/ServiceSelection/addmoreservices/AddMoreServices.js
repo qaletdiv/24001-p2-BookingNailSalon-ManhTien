@@ -1,13 +1,19 @@
 "use client";
 import { useState } from "react";
 import { useSelector } from "react-redux";
-import { ChevronLeft } from "lucide-react";
+import { ChevronLeft, Clock10Icon } from "lucide-react";
+
 import { X } from "lucide-react";
 import { removeService } from "@/redux/slices/bookingSlice";
 import { useAppDispatch } from "@/redux/hooks";
 import ServiceCategories from "../ServiceCategories";
 import ServiceList from "../ServiceList";
+import { addService } from "@/redux/slices/bookingSlice";
+import { setStep } from "@/redux/slices/bookingSlice";
+import { useRouter } from "next/navigation";
 const AddMoreServices = ({ onClose }) => {
+  const router = useRouter();
+  const dispatch = useAppDispatch();
   // State for closing animation
   const [isClosing, setIsClosing] = useState(false);
   // Get services data from redux
@@ -55,6 +61,13 @@ const AddMoreServices = ({ onClose }) => {
     if (e.target.id === "overlay") {
       handleClose();
     }
+  };
+
+  // Handle add service
+  const handleAddService = (id, name, duration, price) => {
+    dispatch(addService({ id, name, duration, price: Number(price) }));
+    dispatch(setStep("staff"));
+    router.push("/booking/staff");
   };
 
   return (
@@ -114,16 +127,10 @@ const AddMoreServices = ({ onClose }) => {
                   }`}
                   aria-hidden={!isOpen}
                 >
-                  <div className="overflow-hidden grid lg:w-3/4 md:w-[500px] w-full mx-auto grid-cols-1 md:grid-cols-2  gap-4 mt-8">
-                    {cat.items.map((service) => (
-                      <div
-                        key={service.id}
-                        className="shadow-md flex justify-between items-center bg-foreground text-neutral-900 p-4 rounded-lg"
-                      >
-                        <span>{service.name}</span>
-                      </div>
-                    ))}
-                  </div>
+                  <ServiceList
+                    servicesData={cat.items}
+                    handleAddService={handleAddService}
+                  />
                 </div>
               </div>
             );
