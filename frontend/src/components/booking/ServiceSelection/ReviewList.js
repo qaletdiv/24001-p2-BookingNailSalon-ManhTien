@@ -1,6 +1,10 @@
 "use client";
 import { useSelector } from "react-redux";
-import { clearStaff, removeCurrentSelected } from "@/redux/slices/bookingSlice";
+import {
+  clearStaff,
+  removeCurrentSelected,
+  setStep,
+} from "@/redux/slices/bookingSlice";
 import { clearServices } from "@/redux/slices/bookingSlice";
 import { useAppDispatch } from "@/redux/hooks";
 import { useEffect, useState } from "react";
@@ -44,6 +48,11 @@ const ReviewList = () => {
   // Handle close more staff
   const handleCloseMoreStaff = () => {
     setOpenMoreStaff(false);
+  };
+  // Handle next
+  const handleNext = () => {
+    dispatch(setStep("datetime"));
+    router.push("/booking/datetime");
   };
   return (
     <>
@@ -98,7 +107,10 @@ const ReviewList = () => {
           >
             Add more services
           </button>
-          <button className="bg-foreground text-base md:text-xl w-1/2 md:w-3/4 font-bold text-neutral-900 px-4 py-2 rounded-full ">
+          <button
+            onClick={handleNext}
+            className="bg-foreground text-base md:text-xl w-1/2 md:w-3/4 font-bold text-neutral-900 px-4 py-2 rounded-full "
+          >
             Next
           </button>
         </div>
