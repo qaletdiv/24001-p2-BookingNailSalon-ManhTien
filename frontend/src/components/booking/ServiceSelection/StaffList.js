@@ -5,10 +5,19 @@ import { useRouter } from "next/navigation";
 import { setStep, setCurrentSelected } from "@/redux/slices/bookingSlice";
 import { useSelector } from "react-redux";
 import { v4 as uuidv4 } from "uuid";
+import { useEffect } from "react";
 const StaffList = ({ staffData }) => {
-  const dispatch = useAppDispatch();
-  const { services } = useSelector((state) => state.booking.currentBooking);
   const router = useRouter();
+  const dispatch = useAppDispatch();
+  const { services, step } = useSelector(
+    (state) => state.booking.currentBooking
+  );
+  useEffect(() => {
+    if (step === "options") {
+      router.push("/booking/review");
+    }
+  }, [step, router]);
+  // Handle add staff
   const handleAddStaff = (id, name) => {
     dispatch(addStaff({ id, name }));
     dispatch(

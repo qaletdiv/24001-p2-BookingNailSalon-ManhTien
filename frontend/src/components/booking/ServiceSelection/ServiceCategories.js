@@ -2,19 +2,21 @@
 
 import { useState } from "react";
 import { ChevronLeft, Check, Clock10Icon } from "lucide-react";
-import ServiceList from "./ServiceList";
+import ServiceList from "@/components/layout/booking/ServiceList";
 import { addService } from "@/redux/slices/bookingSlice";
 import { setStep } from "@/redux/slices/bookingSlice";
 import { useRouter } from "next/navigation";
+import { useAppDispatch } from "@/redux/hooks";
 const ServiceCategories = ({ servicesData }) => {
   const router = useRouter();
   const dispatch = useAppDispatch();
   // Category open state: category name -> boolean
   const [openCats, setOpenCats] = useState({});
-
+  // Toggle category open state
   const toggleCat = (name) => {
     setOpenCats((prev) => ({ ...prev, [name]: !prev[name] }));
   };
+  // Handle add service
   const handleAddService = (id, name, duration, price) => {
     dispatch(addService({ id, name, duration, price: Number(price) }));
     dispatch(setStep("staff"));

@@ -46,7 +46,14 @@ const ServiceList = ({ servicesData, handleAddService }) => {
                 aria-label={`Select ${service.name}`}
               /> */}
             <button
-              onClick={handleAddService}
+              onClick={() =>
+                handleAddService(
+                  service.id,
+                  service.name,
+                  service.duration,
+                  service.price
+                )
+              }
               className="bg-foreground text-neutral-900 px-4 py-2 rounded-full"
             >
               Book Service

@@ -1,18 +1,14 @@
 "use client";
 import { useState } from "react";
 import { useSelector } from "react-redux";
-import { ChevronLeft, Clock10Icon } from "lucide-react";
+import { ChevronLeft } from "lucide-react";
 
 import { X } from "lucide-react";
-import { removeService } from "@/redux/slices/bookingSlice";
 import { useAppDispatch } from "@/redux/hooks";
-import ServiceCategories from "../ServiceCategories";
-import ServiceList from "../ServiceList";
+import ServiceList from "@/components/layout/booking/ServiceList";
 import { addService } from "@/redux/slices/bookingSlice";
 import { setStep } from "@/redux/slices/bookingSlice";
-import { useRouter } from "next/navigation";
-const AddMoreServices = ({ onClose }) => {
-  const router = useRouter();
+const AddMoreServices = ({ onClose, onOpenMoreStaff }) => {
   const dispatch = useAppDispatch();
   // State for closing animation
   const [isClosing, setIsClosing] = useState(false);
@@ -66,8 +62,8 @@ const AddMoreServices = ({ onClose }) => {
   // Handle add service
   const handleAddService = (id, name, duration, price) => {
     dispatch(addService({ id, name, duration, price: Number(price) }));
-    dispatch(setStep("staff"));
-    router.push("/booking/staff");
+    onOpenMoreStaff(true);
+    handleClose();
   };
 
   return (

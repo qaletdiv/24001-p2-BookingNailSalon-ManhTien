@@ -5,14 +5,19 @@ import { clearServices } from "@/redux/slices/bookingSlice";
 import { useAppDispatch } from "@/redux/hooks";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import AddMoreServices from "./addmoreservices/AddMoreServices";
+import AddMoreServices from "./addmoreervices/AddMoreServices";
+import AddMoreStaff from "./addmoreervices/AddMoreStaff";
 const ReviewList = () => {
-  const [moreServices, setMoreServices] = useState(false);
+  const [openMoreServices, setOpenMoreServices] = useState(false);
+  const [openMoreStaff, setOpenMoreStaff] = useState(false);
+
+  // Get current selected from redux
   const dispatch = useAppDispatch();
   const router = useRouter();
   const { currentSelected } = useSelector(
     (state) => state.booking.currentBooking
   );
+  // Clear services and staff from redux
   useEffect(() => {
     dispatch(clearServices());
     dispatch(clearStaff());
@@ -20,14 +25,25 @@ const ReviewList = () => {
       router.push("/booking/services");
     }
   }, [dispatch, currentSelected, router]);
+  // Handle remove service
   const handleRemoveService = (id) => {
     dispatch(removeCurrentSelected(id));
   };
+  // Handle add more services
   const handleAddMoreServices = () => {
-    setMoreServices(true);
+    setOpenMoreServices(true);
   };
+  // Handle close more services
   const handleCloseMoreServices = () => {
-    setMoreServices(false);
+    setOpenMoreServices(false);
+  };
+  // Handle add more staff
+  const handleOpenMoreStaff = () => {
+    setOpenMoreStaff(true);
+  };
+  // Handle close more staff
+  const handleCloseMoreStaff = () => {
+    setOpenMoreStaff(false);
   };
   return (
     <>
@@ -87,7 +103,13 @@ const ReviewList = () => {
           </button>
         </div>
       </div>
-      {moreServices && <AddMoreServices onClose={handleCloseMoreServices} />}
+      {openMoreServices && (
+        <AddMoreServices
+          onClose={handleCloseMoreServices}
+          onOpenMoreStaff={handleOpenMoreStaff}
+        />
+      )}
+      {openMoreStaff && <AddMoreStaff onClose={handleCloseMoreStaff} />}
     </>
   );
 };
