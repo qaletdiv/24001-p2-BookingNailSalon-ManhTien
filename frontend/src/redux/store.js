@@ -1,6 +1,14 @@
 import { configureStore } from "@reduxjs/toolkit";
-import counterSliceReducer from "@/redux/slices/counterSlice";
+import servicesSliceReducer from "@/redux/slices/servicesSlice";
+import staffSliceReducer from "@/redux/slices/staffSlice";
+import bookingSliceReducer from "@/redux/slices/bookingSlice";
 const store = () => {
-  return configureStore({ reducer: { counter: counterSliceReducer } });
+  return configureStore({
+    reducer: {
+      services: servicesSliceReducer,
+      staff: staffSliceReducer,
+      booking: bookingSliceReducer,
+    },
+  });
 };
 export default store;

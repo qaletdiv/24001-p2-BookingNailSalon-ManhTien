@@ -25,10 +25,13 @@ export default function RootLayout({ children }) {
       <body
         className={`min-h-screen flex flex-col ${montserrat.variable} ${tangerine.variable} text-black antialiased`}
       >
-        <Header />
-        <main className="flex-1">{children}</main>
+        <StoreProvider>
 
-        <Footer />
+          <Header />
+          <main className="flex-1">{children}</main>
+
+          <Footer />
+        </StoreProvider>
       </body>
     </html>
   );
