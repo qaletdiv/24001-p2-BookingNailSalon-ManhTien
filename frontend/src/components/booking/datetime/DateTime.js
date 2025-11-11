@@ -2,7 +2,14 @@
 import { Calendar } from "@/components/ui/calendar";
 import { useState } from "react";
 import { setTime } from "@/redux/slices/bookingSlice";
+import { useAppDispatch } from "@/redux/hooks";
+import { useSelector } from "react-redux";
 const DateTime = () => {
+  const dispatch = useAppDispatch();
+  const staffData = useSelector((state) => state.staff.staff);
+  const { currentSelected } = useSelector((state) => state.booking.currentBooking);
+  console.log(staffData);
+  console.log(currentSelected);
   const [date, setDate] = useState(new Date());
   const isDateDisabled = (date) => date <= new Date();
   const [time, setTime] = useState(null);
