@@ -44,18 +44,7 @@ const DateTime = () => {
   }, [dispatch, date]);
   // Handle date selection
   const handleDateSelection = (date) => {
-    if (date) {
-      setDate(date);
-      dispatch(
-        setSelectedDate(
-          date.toLocaleDateString("en-US", {
-            year: "numeric",
-            month: "long",
-            day: "numeric",
-          })
-        )
-      );
-    }
+    setDate(date);
   };
   return (
     <div className="flex md:flex-row w-full flex-col gap-4 justify-start items-start">
