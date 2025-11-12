@@ -61,18 +61,9 @@ const bookingSlice = createSlice({
     setTime: (state, action) => {
       state.currentBooking.selectedTimeSlot = action.payload;
     },
-  },
-  setSelectedDate: (state, action) => {
-    state.currentBooking.selectedDate = action.payload;
-  },
-  setSelectedTimeSlot: (state, action) => {
-    state.currentBooking.selectedTimeSlot = action.payload;
-  },
-  setAvailableTimeSlots: (state, action) => {
-    state.currentBooking.availableTimeSlots = action.payload;
-  },
-  setCustomer: (state, action) => {
-    state.currentBooking.customer = action.payload;
+    setSelectedDate: (state, action) => {
+      state.currentBooking.selectedDate = action.payload;
+    },
   },
 });
 
@@ -88,5 +79,6 @@ export const {
   clearCurrentSelected,
   setStep,
   setTime,
+  setSelectedDate,
 } = bookingSlice.actions;
 export default bookingSlice.reducer;

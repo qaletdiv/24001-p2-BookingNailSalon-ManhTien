@@ -1,21 +1,61 @@
 "use client";
 import { Calendar } from "@/components/ui/calendar";
-import { useState } from "react";
-import { setTime } from "@/redux/slices/bookingSlice";
+import { useState, useEffect } from "react";
+import { setTime, setSelectedDate } from "@/redux/slices/bookingSlice";
 import { useAppDispatch } from "@/redux/hooks";
 import { useSelector } from "react-redux";
 const DateTime = () => {
   const dispatch = useAppDispatch();
   const staffData = useSelector((state) => state.staff.staff);
-  const { currentSelected } = useSelector((state) => state.booking.currentBooking);
+  const { currentSelected } = useSelector(
+    (state) => state.booking.currentBooking
+  );
   console.log(staffData);
   console.log(currentSelected);
-  const [date, setDate] = useState(new Date());
-  const isDateDisabled = (date) => date <= new Date();
-  const [time, setTime] = useState(null);
+  const [date, setDate] = useState(
+    new Date().toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    })
+  );
+  const isDateDisabled = (date) => {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const checkDate = new Date(date);
+    checkDate.setHours(0, 0, 0, 0);
+    return checkDate < today;
+  };
+  const [timeButtonSelected, setTimeButtonSelected] = useState(null);
   const handleTimeSelection = (time) => {
-    setTime(time);
+    setTimeButtonSelected(time);
     dispatch(setTime(time));
+  };
+  useEffect(() => {
+    dispatch(
+      setSelectedDate(
+        new Date(date).toLocaleDateString("en-US", {
+          year: "numeric",
+          month: "long",
+          day: "numeric",
+        })
+      )
+    );
+  }, [dispatch, date]);
+  // Handle date selection
+  const handleDateSelection = (date) => {
+    if (date) {
+      setDate(date);
+      dispatch(
+        setSelectedDate(
+          date.toLocaleDateString("en-US", {
+            year: "numeric",
+            month: "long",
+            day: "numeric",
+          })
+        )
+      );
+    }
   };
   return (
     <div className="flex md:flex-row w-full flex-col gap-4 justify-start items-start">
@@ -23,7 +63,7 @@ const DateTime = () => {
         className="w-full md:w-1/2 "
         mode="single"
         selected={date}
-        onSelect={setDate}
+        onSelect={(date) => handleDateSelection(date)}
         initialFocus
         disabled={isDateDisabled}
       />
@@ -35,73 +75,73 @@ const DateTime = () => {
           <div className="grid grid-cols-3 lg:grid-cols-4 gap-1">
             <button
               className=" py-2 md:w-[78px] w-full text-center rounded-md bg-foreground text-neutral-900"
-              onClick={() => setTime("9:00 AM")}
+              onClick={() => handleTimeSelection("9:00 AM")}
             >
               9:00 AM
             </button>
             <button
               className=" py-2 md:w-[78px] w-full text-center rounded-md bg-foreground text-neutral-900"
-              onClick={() => setTime("9:15 AM")}
+              onClick={() => handleTimeSelection("9:15 AM")}
             >
               9:15 AM
             </button>
             <button
               className=" py-2 md:w-[78px] w-full text-center rounded-md bg-foreground text-neutral-900"
-              onClick={() => setTime("9:30 AM")}
+              onClick={() => handleTimeSelection("9:30 AM")}
             >
               9:30 AM
             </button>
             <button
               className=" py-2 md:w-[78px] w-full text-center rounded-md bg-foreground text-neutral-900"
-              onClick={() => setTime("9:45 AM")}
+              onClick={() => handleTimeSelection("9:45 AM")}
             >
               9:45 AM
             </button>
             <button
               className=" py-2 md:w-[78px] w-full text-center rounded-md bg-foreground text-neutral-900"
-              onClick={() => setTime("10:00 AM")}
+              onClick={() => handleTimeSelection("10:00 AM")}
             >
               10:00 AM
             </button>
             <button
               className=" py-2 md:w-[78px] w-full text-center rounded-md bg-foreground text-neutral-900"
-              onClick={() => setTime("10:15 AM")}
+              onClick={() => handleTimeSelection("10:15 AM")}
             >
               10:15 AM
             </button>
             <button
               className=" py-2 md:w-[78px] w-full text-center rounded-md bg-foreground text-neutral-900"
-              onClick={() => setTime("10:30 AM")}
+              onClick={() => handleTimeSelection("10:30 AM")}
             >
               10:30 AM
             </button>
             <button
               className=" py-2 md:w-[78px] w-full text-center rounded-md bg-foreground text-neutral-900"
-              onClick={() => setTime("10:45 AM")}
+              onClick={() => handleTimeSelection("10:45 AM")}
             >
               10:45 AM
             </button>
             <button
               className=" py-2 md:w-[78px] w-full text-center rounded-md bg-foreground text-neutral-900"
-              onClick={() => setTime("11:00 AM")}
+              onClick={() => handleTimeSelection("11:00 AM")}
             >
               11:00 AM
             </button>
             <button
               className=" py-2 md:w-[78px] w-full text-center rounded-md bg-foreground text-neutral-900"
-              onClick={() => setTime("11:15 AM")}
+              onClick={() => handleTimeSelection("11:15 AM")}
             >
               11:15 AM
             </button>
             <button
               className=" py-2 md:w-[78px] w-full text-center rounded-md bg-foreground text-neutral-900"
-              onClick={() => setTime("11:30 AM")}
+              onClick={() => handleTimeSelection("11:30 AM")}
             >
               11:30 AM
             </button>
             <button
               className=" py-2 md:w-[78px] w-full text-center rounded-md bg-foreground text-neutral-900"
-              onClick={() => setTime("11:45 AM")}
+              onClick={() => handleTimeSelection("11:45 AM")}
             >
               11:45 AM
             </button>
@@ -114,98 +154,98 @@ const DateTime = () => {
           <div className="grid grid-cols-3 lg:grid-cols-4 gap-1">
             <button
               className=" py-2 md:w-[78px] w-full text-center rounded-md bg-foreground text-neutral-900"
-              onClick={() => setTime("12:00 PM")}
+              onClick={() => handleTimeSelection("12:00 PM")}
             >
               12:00 PM
             </button>
             <button
               className=" py-2 md:w-[78px] w-full text-center rounded-md bg-foreground text-neutral-900"
-              onClick={() => setTime("12:15 PM")}
+              onClick={() => handleTimeSelection("12:15 PM")}
             >
               12:15 PM
             </button>
 
             <button
               className=" py-2 md:w-[78px] w-full text-center rounded-md bg-foreground text-neutral-900"
-              onClick={() => setTime("12:30 PM")}
+              onClick={() => handleTimeSelection("12:30 PM")}
             >
               12:30 PM
             </button>
             <button
               className=" py-2 md:w-[78px] w-full text-center rounded-md bg-foreground text-neutral-900"
-              onClick={() => setTime("12:45 PM")}
+              onClick={() => handleTimeSelection("12:45 PM")}
             >
               12:45 PM
             </button>
             <button
               className=" py-2 md:w-[78px] w-full text-center rounded-md bg-foreground text-neutral-900"
-              onClick={() => setTime("1:00 PM")}
+              onClick={() => handleTimeSelection("1:00 PM")}
             >
               1:00 PM
             </button>
             <button
               className=" py-2 md:w-[78px] w-full text-center rounded-md bg-foreground text-neutral-900"
-              onClick={() => setTime("1:15 PM")}
+              onClick={() => handleTimeSelection("1:15 PM")}
             >
               1:15 PM
             </button>
             <button
               className=" py-2 md:w-[78px] w-full text-center rounded-md bg-foreground text-neutral-900"
-              onClick={() => setTime("1:30 PM")}
+              onClick={() => handleTimeSelection("1:30 PM")}
             >
               1:30 PM
             </button>
             <button
               className=" py-2 md:w-[78px] w-full text-center rounded-md bg-foreground text-neutral-900"
-              onClick={() => setTime("1:45 PM")}
+              onClick={() => handleTimeSelection("1:45 PM")}
             >
               1:45 PM
             </button>
             <button
               className=" py-2 md:w-[78px] w-full text-center rounded-md bg-foreground text-neutral-900"
-              onClick={() => setTime("2:00 PM")}
+              onClick={() => handleTimeSelection("2:00 PM")}
             >
               2:00 PM
             </button>
             <button
               className=" py-2 md:w-[78px] w-full text-center rounded-md bg-foreground text-neutral-900"
-              onClick={() => setTime("2:15 PM")}
+              onClick={() => handleTimeSelection("2:15 PM")}
             >
               2:15 PM
             </button>
             <button
               className=" py-2 md:w-[78px] w-full text-center rounded-md bg-foreground text-neutral-900"
-              onClick={() => setTime("2:30 PM")}
+              onClick={() => handleTimeSelection("2:30 PM")}
             >
               2:30 PM
             </button>
             <button
               className=" py-2 md:w-[78px] w-full text-center rounded-md bg-foreground text-neutral-900"
-              onClick={() => setTime("2:45 PM")}
+              onClick={() => handleTimeSelection("2:45 PM")}
             >
               2:45 PM
             </button>
             <button
               className=" py-2 md:w-[78px] w-full text-center rounded-md bg-foreground text-neutral-900"
-              onClick={() => setTime("3:00 PM")}
+              onClick={() => handleTimeSelection("3:00 PM")}
             >
               3:00 PM
             </button>
             <button
               className=" py-2 md:w-[78px] w-full text-center rounded-md bg-foreground text-neutral-900"
-              onClick={() => setTime("3:15 PM")}
+              onClick={() => handleTimeSelection("3:15 PM")}
             >
               3:15 PM
             </button>
             <button
               className=" py-2 md:w-[78px] w-full text-center rounded-md bg-foreground text-neutral-900"
-              onClick={() => setTime("3:30 PM")}
+              onClick={() => handleTimeSelection("3:30 PM")}
             >
               3:30 PM
             </button>
             <button
               className=" py-2 md:w-[78px] w-full text-center rounded-md bg-foreground text-neutral-900"
-              onClick={() => setTime("3:45 PM")}
+              onClick={() => handleTimeSelection("3:45 PM")}
             >
               3:45 PM
             </button>
@@ -218,67 +258,67 @@ const DateTime = () => {
           <div className="grid grid-cols-3 lg:grid-cols-4 gap-2">
             <button
               className=" py-2 md:w-[78px] w-full  text-center rounded-md bg-foreground text-neutral-900"
-              onClick={() => setTime("4:00 PM")}
+              onClick={() => handleTimeSelection("4:00 PM")}
             >
               4:00 PM
             </button>
             <button
               className=" py-2 md:w-[78px] w-full  text-center rounded-md bg-foreground text-neutral-900"
-              onClick={() => setTime("4:15 PM")}
+              onClick={() => handleTimeSelection("4:15 PM")}
             >
               4:15 PM
             </button>
             <button
               className=" py-2 md:w-[78px] w-full  text-center rounded-md bg-foreground text-neutral-900"
-              onClick={() => setTime("4:30 PM")}
+              onClick={() => handleTimeSelection("4:30 PM")}
             >
               4:30 PM
             </button>
             <button
               className=" py-2 md:w-[78px] w-full  text-center rounded-md bg-foreground text-neutral-900"
-              onClick={() => setTime("4:45 PM")}
+              onClick={() => handleTimeSelection("4:45 PM")}
             >
               4:45 PM
             </button>
             <button
               className=" py-2 md:w-[78px] w-full  text-center rounded-md bg-foreground text-neutral-900"
-              onClick={() => setTime("5:00 PM")}
+              onClick={() => handleTimeSelection("5:00 PM")}
             >
               5:00 PM
             </button>
             <button
               className=" py-2 md:w-[78px] w-full  text-center rounded-md bg-foreground text-neutral-900"
-              onClick={() => setTime("5:15 PM")}
+              onClick={() => handleTimeSelection("5:15 PM")}
             >
               5:15 PM
             </button>
             <button
               className=" py-2 md:w-[78px] w-full text-center rounded-md bg-foreground text-neutral-900"
-              onClick={() => setTime("5:30 PM")}
+              onClick={() => handleTimeSelection("5:30 PM")}
             >
               5:30 PM
             </button>
             <button
               className=" py-2 md:w-[78px] w-full  text-center rounded-md bg-foreground text-neutral-900"
-              onClick={() => setTime("5:45 PM")}
+              onClick={() => handleTimeSelection("5:45 PM")}
             >
               5:45 PM
             </button>
             <button
               className=" py-2 md:w-[78px] w-full  text-center rounded-md bg-foreground text-neutral-900"
-              onClick={() => setTime("6:00 PM")}
+              onClick={() => handleTimeSelection("6:00 PM")}
             >
               6:00 PM
             </button>
             <button
               className=" py-2 md:w-[78px] w-full  text-center rounded-md bg-foreground text-neutral-900"
-              onClick={() => setTime("6:15 PM")}
+              onClick={() => handleTimeSelection("6:15 PM")}
             >
               6:15 PM
             </button>
             <button
               className=" py-2 md:w-[78px] w-full text-center rounded-md bg-foreground text-neutral-900"
-              onClick={() => setTime("6:30 PM")}
+              onClick={() => handleTimeSelection("6:30 PM")}
             >
               6:30 PM
             </button>
