@@ -1,4 +1,5 @@
 import { Tangerine } from "next/font/google";
+import BookingStep from "@/components/booking/bookingstep/BookingStep";
 const tangerine = Tangerine({
   weight: ["400", "700"],
   variable: "--font-tangerine",
@@ -7,6 +8,8 @@ const tangerine = Tangerine({
 
 const BookingLayout = ({ children }) => {
   return (
+    <>  
+    <BookingStep />
     <section className="pt-28 pb-12 h-full flex justify-center  elegant-swirl-pattern">
       <div className="text-center flex flex-col gap-2  md:w-3/4 items-stretch w-full px-4 ">
         <h1 className={`${tangerine.className} md:text-7xl text-5xl font-bold`}>
@@ -20,6 +23,7 @@ const BookingLayout = ({ children }) => {
         {children}
       </div>
     </section>
+    </>
   );
 };
 
