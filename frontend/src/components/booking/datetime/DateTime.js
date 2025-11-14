@@ -67,7 +67,7 @@ const DateTime = ({ appointmentData }) => {
   const filteredAppointmentData = appointmentData.filter((appointment) =>
     currentSelectedStaffId.includes(appointment.staff.id)
   );
-  console.log(filteredAppointmentData);
+
   // Filter appointment data based on date
   const filteredAppointmentByCurrentDate = filteredAppointmentData.filter(
     (appointment) => {
@@ -78,13 +78,22 @@ const DateTime = ({ appointmentData }) => {
       return appointment.date === formated;
     }
   );
-  console.log("ngay thoi diem dang duoc chon:", date);
-  console.log("luc array ngay:", filteredAppointmentByCurrentDate);
+
+  console.log(
+    "filtered appointment by current date:",
+    filteredAppointmentByCurrentDate
+  );
 
   //----------------------------schedule--------------------------
+  const curDay = new Date(date)
+    .toLocaleDateString("en-US", {
+      weekday: "long",
+    })
+    .toLowerCase();
+  console.log("ngay hien tai:", curDay);
   const scheduleByCurrentStaff = filteredStaffData[0].schedule;
-
-  console.log("schedule by current staff:", scheduleByCurrentStaff);
+  const scheduleByCurrentDay = scheduleByCurrentStaff[curDay];
+  console.log("schedule by current day:", scheduleByCurrentDay);
   // Check if the date is disabled
   const isDateDisabled = (date) => {
     const today = new Date();
