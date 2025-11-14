@@ -82,7 +82,9 @@ const DateTime = ({ appointmentData }) => {
   console.log("luc array ngay:", filteredAppointmentByCurrentDate);
 
   //----------------------------schedule--------------------------
+  const scheduleByCurrentStaff = filteredStaffData[0].schedule;
 
+  console.log("schedule by current staff:", scheduleByCurrentStaff);
   // Check if the date is disabled
   const isDateDisabled = (date) => {
     const today = new Date();
