@@ -3,8 +3,8 @@ import { useEffect } from "react";
 import { useAppDispatch } from "@/redux/hooks";
 import { setServices } from "@/redux/slices/servicesSlice";
 import { setStaff } from "@/redux/slices/staffSlice";
-
-export default function DataHydrator({ services, staff }) {
+import { setAppointments } from "@/redux/slices/appointmentSlice";
+export default function DataHydrator({ services, staff , appointments}) {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
@@ -15,7 +15,10 @@ export default function DataHydrator({ services, staff }) {
     if (staff) {
       dispatch(setStaff(staff));
     }
-  }, [dispatch, services, staff]);
+    if (appointments) {
+      dispatch(setAppointments(appointments));
+    }
+  }, [dispatch, services, staff, appointments]);
 
   return null; // This component doesn't render anything
 }

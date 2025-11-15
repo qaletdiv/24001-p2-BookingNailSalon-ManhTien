@@ -60,6 +60,7 @@ const DateTime = ({ appointmentData }) => {
     (selected) => selected.StaffId
   );
   console.log("current selected staff id:", currentSelectedStaffId);
+  
   // Filter staff data based on current selected staff id
   const filteredStaffData = staffData.filter((staff) =>
     currentSelectedStaffId.includes(staff.id)
@@ -67,7 +68,7 @@ const DateTime = ({ appointmentData }) => {
   console.log("filtered staff data:", filteredStaffData);
   // Filter appointment data based on current selected staff
   const filteredAppointmentData = appointmentData.filter((appointment) =>
-    currentSelectedStaffId.includes(appointment.staff.id)
+    currentSelectedStaffId.includes(appointment.staff.id )
   );
 
   // Filter appointment data based on date
@@ -77,7 +78,7 @@ const DateTime = ({ appointmentData }) => {
       const formated = `${curDate.getFullYear()}-${
         curDate.getMonth() + 1
       }-${curDate.getDate()}`;
-      return appointment.date === formated;
+      return appointment?.date === formated;
     }
   );
 
@@ -100,6 +101,7 @@ const DateTime = ({ appointmentData }) => {
   const isDateDisabled = (date) => {
     const today = new Date();
     today.setHours(0, 0, 0, 0);
+    
     const checkDate = new Date(date);
     checkDate.setHours(0, 0, 0, 0);
     return checkDate < today;

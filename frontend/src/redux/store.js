@@ -2,28 +2,24 @@ import { configureStore } from "@reduxjs/toolkit";
 import servicesSliceReducer from "@/redux/slices/servicesSlice";
 import staffSliceReducer from "@/redux/slices/staffSlice";
 import bookingSliceReducer from "@/redux/slices/bookingSlice";
-
+import appointmentsSliceReducer from "@/redux/slices/appointmentSlice";
 const loadState = () => {
   try {
-    const serializedState = sessionStorage.getItem("bookingStateData");
+    const serializedState = sessionStorage.getItem("stateDate");
     if (serializedState === null) {
       return undefined;
     }
-    const bookingStateData = JSON.parse(serializedState);
-    return {
-      booking: {
-        currentBooking: bookingStateData,
-      },
-    };
+    const stateDate = JSON.parse(serializedState);
+    return stateDate;
   }
   catch (error) {
     return undefined;
   }
 };
 const saveState = (state) => {
-  const bookingStateData = state.booking.currentBooking;
-  const serializedState = JSON.stringify( bookingStateData );
-  sessionStorage.setItem("bookingStateData", serializedState);
+  const stateDate = state
+  const serializedState = JSON.stringify( stateDate );
+  sessionStorage.setItem("stateDate", serializedState);
   
 };
 const store = () => {
@@ -35,6 +31,7 @@ const store = () => {
       services: servicesSliceReducer,
       staff: staffSliceReducer,
       booking: bookingSliceReducer,
+      appointments: appointmentsSliceReducer,
     },
     preloadedState,
   });
