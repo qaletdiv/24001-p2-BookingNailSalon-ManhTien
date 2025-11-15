@@ -11,13 +11,13 @@ const tangerine = Tangerine({
 });
 
 const BookingLayout = async ({ children }) => {
-  const services = await fetchServicesData();
-  const staff = await fetchStaffData();
-  const appointments = await fetchAppointmentData();
+  // const services = await fetchServicesData();
+  // const staff = await fetchStaffData();
+  // const appointments = await fetchAppointmentData();
   return (
     <>  
-    <DataHydrator services={services} staff={staff} appointments={appointments} />
-    <BookingStep />
+    {/* <DataHydrator services={services} staff={staff} appointments={appointments} /> */}
+    {/* <BookingStep /> */}
 
     <section className="pt-28 pb-12 h-full flex justify-center  elegant-swirl-pattern">
       <div className="text-center flex flex-col gap-2  md:w-3/4 items-stretch w-full px-4 ">

@@ -47,12 +47,18 @@ const DateTime = ({ appointmentData }) => {
     "6:30 PM",
   ];
   const dispatch = useAppDispatch();
-  const [date, setDate] = useState(new Date().toDateString());
+  const [date, setDate] = useState(new Date());
   const [timeButtonSelected, setTimeButtonSelected] = useState(null);
+  const [mounted, setMounted] = useState(false);
   const staffData = useSelector((state) => state.staff.staff);
   const { currentSelected } = useSelector(
     (state) => state.booking.currentBooking
   );
+
+  // Set mounted to true after component mounts on client
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   //--------------------------------- Filter data ---------------------------------
   // Get current selected staff id
@@ -62,7 +68,7 @@ const DateTime = ({ appointmentData }) => {
   console.log("current selected staff id:", currentSelectedStaffId);
   
   // Filter staff data based on current selected staff id
-  const filteredStaffData = staffData.filter((staff) =>
+  const filteredStaffData = staffData.find((staff) =>
     currentSelectedStaffId.includes(staff.id)
   );
   console.log("filtered staff data:", filteredStaffData);
@@ -93,11 +99,14 @@ const DateTime = ({ appointmentData }) => {
       weekday: "long",
     })
     .toLowerCase();
-  console.log("ngay hien tai:", curDay);
-  const scheduleByCurrentStaff = filteredStaffData[0].schedule;
-  const scheduleByCurrentDay = scheduleByCurrentStaff[curDay];
+  console.log("current day:", typeof curDay);
+  const scheduleByCurrentStaff = filteredStaffData?.schedule;
+  console.log("schedule by current staff:", scheduleByCurrentStaff);
+  const scheduleByCurrentDay = scheduleByCurrentStaff && scheduleByCurrentStaff[curDay];
   console.log("schedule by current day:", scheduleByCurrentDay);
+  
   // Check if the date is disabled
+
   const isDateDisabled = (date) => {
     const today = new Date();
     today.setHours(0, 0, 0, 0);
@@ -130,7 +139,7 @@ const DateTime = ({ appointmentData }) => {
     <>
       <div>
         Current Selected Staff:{" "}
-        {filteredStaffData.map((staff) => staff.name).join(", ")}
+        {mounted && filteredStaffData?.name}
       </div>
       <div className="flex md:flex-row w-full flex-col gap-4 justify-start items-start">
         <Calendar
