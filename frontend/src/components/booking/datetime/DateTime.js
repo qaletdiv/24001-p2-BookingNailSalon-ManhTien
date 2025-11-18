@@ -87,6 +87,7 @@ const DateTime = ({ appointmentData }) => {
   const [date, setDate] = useState(new Date());
   const [mounted, setMounted] = useState(false);
   const staffData = useSelector((state) => state.staff.staff);
+  const [showNextButton, setShowNextButton] = useState(false);
   const { currentSelected } = useSelector(
     (state) => state.booking.currentBooking
   );
@@ -230,6 +231,22 @@ const DateTime = ({ appointmentData }) => {
   const handleDateSelection = (date) => {
     setDate(date);
   };
+  // Handle next
+  // Handle animation for next button
+  useEffect(() => {
+    if (selectedTime) {
+      // Small delay to trigger animation
+      const timer = setTimeout(() => {
+        setShowNextButton(true);
+      }, 50);
+      return () => clearTimeout(timer);
+    } else {
+      setShowNextButton(false);
+    }
+  }, [selectedTime]);
+  const handleNext = () => {
+    dispatch(setStep("review"));
+  };
   return (
     <>
       <div>
@@ -346,6 +363,23 @@ const DateTime = ({ appointmentData }) => {
           </div>
         </div>
       </div>
+      {selectedTime && (
+        <div 
+          className={`flex w-full md:w-3/4 z-50 fixed bottom-[10%] left-[50%] translate-x-[-50%] justify-center items-center mt-4 transition-all duration-500 ease-out ${
+            showNextButton 
+              ? 'opacity-100 translate-y-0' 
+              : 'opacity-0 translate-y-4'
+          }`}
+        >
+          <button
+            key="next"
+            onClick={handleNext}
+            className="bg-black text-white transition-all duration-300 md:text-xl w-1/2 md:w-3/4 font-bold px-4 py-2 rounded-full hover:scale-105 active:scale-95"
+          >
+            Next
+          </button>
+        </div>
+      )}
     </>
   );
 };
