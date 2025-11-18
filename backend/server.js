@@ -204,6 +204,107 @@ const appointments = [
     createdAt: "2024-12-19T08:30:00Z",
     updatedAt: "2024-12-19T08:30:00Z",
   },
+  {
+    id: 7,
+    customer: {
+      name: "Lisa Anderson",
+      phone: "+1-555-0107",
+      email: "lisa.anderson@email.com",
+    },
+    staff: {
+      id: 1,
+      name: "Lina Nguyen",
+    },
+    services: [
+      {
+        id: 2,
+        name: "Gel Manicure",
+        category: "Manicure",
+        duration: 45,
+        price: 40,
+      },
+    ],
+    date: "2025-11-22",
+    timeSlot: "9:00 AM",
+    totalDuration: 45,
+    totalPrice: 40,
+    status: "confirmed",
+    notes: "French tip design preferred",
+    createdAt: "2024-12-20T08:00:00Z",
+    updatedAt: "2024-12-20T08:00:00Z",
+  },
+  {
+    id: 8,
+    customer: {
+      name: "Nicole Taylor",
+      phone: "+1-555-0108",
+      email: "nicole.taylor@email.com",
+    },
+    staff: {
+      id: 1,
+      name: "Lina Nguyen",
+    },
+    services: [
+      {
+        id: 3,
+        name: "Acrylic Full Set",
+        category: "Enhancement",
+        duration: 75,
+        price: 60,
+      },
+      {
+        id: 7,
+        name: "Nail Art",
+        category: "Add-On",
+        duration: 15,
+        price: 10,
+      },
+    ],
+    date: "2025-11-22",
+    timeSlot: "1:30 PM",
+    totalDuration: 90,
+    totalPrice: 70,
+    status: "confirmed",
+    notes: "Coffin shape, medium length with floral design",
+    createdAt: "2024-12-20T10:15:00Z",
+    updatedAt: "2024-12-20T10:15:00Z",
+  },
+  {
+    id: 9,
+    customer: {
+      name: "Patricia Davis",
+      phone: "+1-555-0109",
+      email: "patricia.davis@email.com",
+    },
+    staff: {
+      id: 1,
+      name: "Lina Nguyen",
+    },
+    services: [
+      {
+        id: 5,
+        name: "Spa Pedicure",
+        category: "Pedicure",
+        duration: 45,
+        price: 45,
+      },
+      {
+        id: 1,
+        name: "Classic Manicure",
+        category: "Manicure",
+        duration: 30,
+        price: 25,
+      },
+    ],
+    date: "2025-11-22",
+    timeSlot: "3:00 PM",
+    totalDuration: 75,
+    totalPrice: 70,
+    status: "confirmed",
+    notes: "Regular customer - prefers neutral colors",
+    createdAt: "2024-12-20T12:30:00Z",
+    updatedAt: "2024-12-20T12:30:00Z",
+  },
 ];
 const services = [
   {

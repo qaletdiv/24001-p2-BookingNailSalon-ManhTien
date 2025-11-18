@@ -4,8 +4,45 @@ import { useState, useEffect } from "react";
 import { setTime, setSelectedDate } from "@/redux/slices/bookingSlice";
 import { useAppDispatch } from "@/redux/hooks";
 import { useSelector } from "react-redux";
+// Helper function to convert time string to minutes since midnight
+const timeToMinutes = (timeStr) => {
+  const [time, period] = timeStr.split(' ');
+  const [hours, minutes] = time.split(':').map(Number);
+  let totalMinutes = hours * 60 + minutes;
+  if (period === 'PM' && hours !== 12) {
+    totalMinutes += 12 * 60; // Add 12 hours for PM
+  }
+  if (period === 'AM' && hours === 12) {
+    totalMinutes -= 12 * 60; // Subtract 12 hours for 12 AM
+  }
+  return totalMinutes;
+};
+// Helper function to convert minutes to time string
+const minutesToTime = (minutes) => {
+  const endHours24 = Math.floor(minutes / 60) % 24;
+      const endMinutes = minutes % 60;
+      
+      // Convert to 12-hour format with AM/PM
+      let endHours = endHours24;
+      let endPeriod = 'AM';
+      if (endHours24 === 0) {
+        endHours = 12;
+        endPeriod = 'AM';
+      } else if (endHours24 === 12) {
+        endHours = 12;
+        endPeriod = 'PM';
+      } else if (endHours24 > 12) {
+        endHours = endHours24 - 12;
+        endPeriod = 'PM';
+      } else {
+        endPeriod = 'AM';
+      }
+      
+      return `${endHours}:${endMinutes.toString().padStart(2, '0')} ${endPeriod}`;
+
+};
 const DateTime = ({ appointmentData }) => {
-  const ArrTimeSlot = [
+  const arrTimeSlot = [
     "9:00 AM",
     "9:15 AM",
     "9:30 AM",
@@ -60,18 +97,17 @@ const DateTime = ({ appointmentData }) => {
     setMounted(true);
   }, []);
 
+  
   //--------------------------------- Filter data ---------------------------------
   // Get current selected staff id
   const currentSelectedStaffId = currentSelected.map(
     (selected) => selected.StaffId
   );
-  console.log("current selected staff id:", currentSelectedStaffId);
   
   // Filter staff data based on current selected staff id
   const filteredStaffData = staffData.find((staff) =>
     currentSelectedStaffId.includes(staff.id)
   );
-  console.log("filtered staff data:", filteredStaffData);
   // Filter appointment data based on current selected staff
   const filteredAppointmentData = appointmentData.filter((appointment) =>
     currentSelectedStaffId.includes(appointment.staff.id )
@@ -88,10 +124,6 @@ const DateTime = ({ appointmentData }) => {
     }
   );
 
-  console.log(
-    "filtered appointment by current date:",
-    filteredAppointmentByCurrentDate
-  );
 
   //----------------------------schedule--------------------------
   const curDay = new Date(date)
@@ -99,11 +131,68 @@ const DateTime = ({ appointmentData }) => {
       weekday: "long",
     })
     .toLowerCase();
-  console.log("current day:", typeof curDay);
   const scheduleByCurrentStaff = filteredStaffData?.schedule;
-  console.log("schedule by current staff:", scheduleByCurrentStaff);
   const scheduleByCurrentDay = scheduleByCurrentStaff && scheduleByCurrentStaff[curDay];
-  console.log("schedule by current day:", scheduleByCurrentDay);
+  
+
+  //--------------------------------- available time slots ---------------------------------
+  
+  //booked time slots
+  const bookedTimeSlots = filteredAppointmentByCurrentDate.reduce((acc, appointment) => {
+    const startTime = appointment.timeSlot;
+    const convertEndTime = (startTime, duration) => {
+      // Split time and period (AM/PM)
+      const totalMinutes = timeToMinutes(startTime) + duration;
+    
+      return minutesToTime(totalMinutes);
+    };
+    const endTime = convertEndTime(startTime, appointment.totalDuration);
+    let bookedTime = []
+    const fifteenMinutes = 15;
+    for(let i = timeToMinutes(startTime); i <= timeToMinutes(endTime); i += fifteenMinutes){
+      bookedTime.push(minutesToTime(i));
+    }
+    acc.push({bookedTime: bookedTime});
+    return acc;
+  }, []);
+  console.log("booked time slots:", bookedTimeSlots);
+  //available time slots before booked
+  const availableTimeSlots = arrTimeSlot.filter((time => {
+      if (!scheduleByCurrentDay || scheduleByCurrentDay.length < 2) {
+        return false; // Return no available slots if schedule is invalid
+      }
+      const startTime = scheduleByCurrentDay[0];
+      const endTime = scheduleByCurrentDay[1];
+      
+      if (startTime === "Off") {
+        return false;
+      } else {
+        const timeMinutes = timeToMinutes(time);
+        const startMinutes = timeToMinutes(startTime);
+        const endMinutes = timeToMinutes(endTime);
+        if( timeMinutes >= startMinutes && timeMinutes <= endMinutes){
+          
+          return true;
+
+        }
+      }
+    }));
+
+
+    const allBookedTime = bookedTimeSlots.reduce((acc, bookedTime) => {
+      return acc.concat(bookedTime.bookedTime);
+    }, []);
+  //available time slots after booked
+  const availableTimeSlotsAfterBooked = availableTimeSlots.filter((time => {
+    return !allBookedTime.includes(time);
+  }));
+  console.log("available time slots after booked:", availableTimeSlotsAfterBooked);
+  
+  const activeTime = arrTimeSlot.map((time) => {
+    return availableTimeSlotsAfterBooked.includes(time);
+  });
+
+  console.log("active time:", activeTime);
   
   // Check if the date is disabled
 
@@ -156,12 +245,24 @@ const DateTime = ({ appointmentData }) => {
               Morning
             </h3>
             <div className="grid grid-cols-3 lg:grid-cols-4 gap-1">
-              {ArrTimeSlot.map((time, idx) => {
-                if (/^(9|10|11):/.test(time)) {
+              { mounted && arrTimeSlot.map((time, idx) => {
+                if (activeTime[idx] && /^(9|10|11):/.test(time)) {
                   return (
                     <button
                       key={idx}
+                      disabled={false}
                       className=" py-2 md:w-[78px] w-full text-center rounded-md bg-foreground text-neutral-900"
+                      onClick={() => handleTimeSelection(time)}
+                    >
+                      {time}
+                    </button>
+                  );
+                }else if (!activeTime[idx] & /^(9|10|11):/.test(time)) {
+                  return (
+                    <button
+                      key={idx}
+                      disabled={true}
+                      className="bg-neutral-300 py-2 md:w-[78px] w-full text-center rounded-md text-neutral-900"
                       onClick={() => handleTimeSelection(time)}
                     >
                       {time}
@@ -176,18 +277,31 @@ const DateTime = ({ appointmentData }) => {
               Afternoon{" "}
             </h3>
             <div className="grid grid-cols-3 lg:grid-cols-4 gap-1">
-              {ArrTimeSlot.map((time, idx) => {
-                if (/^(12|1|2|3):/.test(time)) {
+              { mounted && arrTimeSlot.map((time, idx) => {
+                if (activeTime[idx] && /^(12|1|2|3):/.test(time)) {
                   return (
                     <button
                       key={idx}
+                      disabled={false}
                       className=" py-2 md:w-[78px] w-full text-center rounded-md bg-foreground text-neutral-900"
                       onClick={() => handleTimeSelection(time)}
                     >
                       {time}
                     </button>
                   );
+                }else if (!activeTime[idx] && /^(12|1|2|3):/.test(time)) {
+                  return (
+                    <button
+                      key={idx}
+                      disabled={true}
+                      className="bg-neutral-300 py-2 md:w-[78px] w-full text-center rounded-md text-neutral-900"
+                      onClick={() => handleTimeSelection(time)}
+                    >
+                      {time}
+                    </button>
+                  );
                 }
+                
               })}
             </div>
           </div>
@@ -196,18 +310,31 @@ const DateTime = ({ appointmentData }) => {
               Evening{" "}
             </h3>
             <div className="grid grid-cols-3 lg:grid-cols-4 gap-1">
-              {ArrTimeSlot.map((time, idx) => {
-                if (/^(4|5|6):/.test(time)) {
+              { mounted && arrTimeSlot.map((time, idx) => {
+                if (activeTime[idx] && /^(4|5|6):/.test(time)) {
                   return (
                     <button
                       key={idx}
+                      disabled={false}
                       className=" py-2 md:w-[78px] w-full text-center rounded-md bg-foreground text-neutral-900"
                       onClick={() => handleTimeSelection(time)}
                     >
                       {time}
                     </button>
                   );
+                }else if (!activeTime[idx] && /^(4|5|6):/.test(time)) {
+                  return (
+                    <button
+                      key={idx}
+                      disabled={true}
+                      className="bg-neutral-300 py-2 md:w-[78px] w-full text-center rounded-md text-neutral-900"
+                      onClick={() => handleTimeSelection(time)}
+                    >
+                      {time}
+                    </button>
+                  );
                 }
+                
               })}
             </div>
           </div>
