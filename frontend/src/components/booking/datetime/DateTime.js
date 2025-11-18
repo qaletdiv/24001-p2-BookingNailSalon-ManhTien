@@ -85,17 +85,16 @@ const DateTime = ({ appointmentData }) => {
   ];
   const dispatch = useAppDispatch();
   const [date, setDate] = useState(new Date());
-  const [timeButtonSelected, setTimeButtonSelected] = useState(null);
   const [mounted, setMounted] = useState(false);
   const staffData = useSelector((state) => state.staff.staff);
   const { currentSelected } = useSelector(
     (state) => state.booking.currentBooking
   );
-
+  const selectedTime = useSelector((state) => state.booking.currentBooking.selectedTimeSlot);
   // Set mounted to true after component mounts on client
-  useEffect(() => {
-    setMounted(true);
-  }, []);
+  // useEffect(() => {
+  //   setMounted(true);
+  // }, []);
 
   
   //--------------------------------- Filter data ---------------------------------
@@ -155,7 +154,6 @@ const DateTime = ({ appointmentData }) => {
     acc.push({bookedTime: bookedTime});
     return acc;
   }, []);
-  console.log("booked time slots:", bookedTimeSlots);
   //available time slots before booked
   const availableTimeSlots = arrTimeSlot.filter((time => {
       if (!scheduleByCurrentDay || scheduleByCurrentDay.length < 2) {
@@ -178,23 +176,24 @@ const DateTime = ({ appointmentData }) => {
       }
     }));
 
-
+    //all booked time
     const allBookedTime = bookedTimeSlots.reduce((acc, bookedTime) => {
       return acc.concat(bookedTime.bookedTime);
     }, []);
+
+
   //available time slots after booked
   const availableTimeSlotsAfterBooked = availableTimeSlots.filter((time => {
     return !allBookedTime.includes(time);
   }));
-  console.log("available time slots after booked:", availableTimeSlotsAfterBooked);
-  
+
+  //active time slots
   const activeTime = arrTimeSlot.map((time) => {
     return availableTimeSlotsAfterBooked.includes(time);
   });
 
-  console.log("active time:", activeTime);
   
-  // Check if the date is disabled
+  // Check if the date is disabled --------------------------------- ------------------------
 
   const isDateDisabled = (date) => {
     const today = new Date();
@@ -205,11 +204,18 @@ const DateTime = ({ appointmentData }) => {
     return checkDate < today;
   };
 
+
   const handleTimeSelection = (time) => {
-    setTimeButtonSelected(time);
-    dispatch(setTime(time));
+    if (selectedTime === time) {
+      dispatch(setTime(null));
+    } else {
+      dispatch(setTime(time));
+    }
   };
   useEffect(() => {
+    // Set mounted to true after component mounts on client
+    setMounted(true);
+    // Set selected date
     dispatch(
       setSelectedDate(
         new Date(date).toLocaleDateString("en-US", {
@@ -251,7 +257,7 @@ const DateTime = ({ appointmentData }) => {
                     <button
                       key={idx}
                       disabled={false}
-                      className=" py-2 md:w-[78px] w-full text-center rounded-md bg-foreground text-neutral-900"
+                      className={`cursor-pointer transition-all duration-300 py-2 md:w-[78px] w-full text-center rounded-md ${selectedTime === time ? 'bg-black text-neutral-100' : 'bg-foreground text-neutral-900'}`}
                       onClick={() => handleTimeSelection(time)}
                     >
                       {time}
@@ -283,7 +289,7 @@ const DateTime = ({ appointmentData }) => {
                     <button
                       key={idx}
                       disabled={false}
-                      className=" py-2 md:w-[78px] w-full text-center rounded-md bg-foreground text-neutral-900"
+                      className={`cursor-pointer transition-all duration-300 py-2 md:w-[78px] w-full text-center rounded-md ${selectedTime === time ? 'bg-black text-neutral-100' : 'bg-foreground text-neutral-900'}`}
                       onClick={() => handleTimeSelection(time)}
                     >
                       {time}
@@ -316,7 +322,7 @@ const DateTime = ({ appointmentData }) => {
                     <button
                       key={idx}
                       disabled={false}
-                      className=" py-2 md:w-[78px] w-full text-center rounded-md bg-foreground text-neutral-900"
+                      className={`cursor-pointer transition-all duration-300 py-2 md:w-[78px] w-full text-center rounded-md ${selectedTime === time ? 'bg-black text-neutral-100' : 'bg-foreground text-neutral-900'}`}
                       onClick={() => handleTimeSelection(time)}
                     >
                       {time}
