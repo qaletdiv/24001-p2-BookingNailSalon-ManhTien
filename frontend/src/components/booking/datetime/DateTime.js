@@ -374,7 +374,7 @@ const DateTime = ({ appointmentData }) => {
           <button
             key="next"
             onClick={handleNext}
-            className="bg-black text-white transition-all duration-300 md:text-xl w-1/2 md:w-3/4 font-bold px-4 py-2 rounded-full hover:scale-105 active:scale-95"
+            className="bg-black text-white transition-all duration-300 md:text-xl w-3/4 md:w-3/4 font-bold px-4 py-2 rounded-full hover:scale-105 active:scale-95"
           >
             Next
           </button>
