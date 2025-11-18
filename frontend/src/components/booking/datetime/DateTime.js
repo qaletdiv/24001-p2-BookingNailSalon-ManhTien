@@ -154,7 +154,7 @@ const DateTime = ({ appointmentData }) => {
     acc.push({bookedTime: bookedTime});
     return acc;
   }, []);
-  //available time slots before booked
+  //available time slots before booked--------------------------------------------------------
   const availableTimeSlots = arrTimeSlot.filter((time => {
       if (!scheduleByCurrentDay || scheduleByCurrentDay.length < 2) {
         return false; // Return no available slots if schedule is invalid
@@ -182,12 +182,12 @@ const DateTime = ({ appointmentData }) => {
     }, []);
 
 
-  //available time slots after booked
+  //available time slots after booked--------------------------------------------------------
   const availableTimeSlotsAfterBooked = availableTimeSlots.filter((time => {
     return !allBookedTime.includes(time);
   }));
 
-  //active time slots
+  //active time slots--------------------------------------------------------
   const activeTime = arrTimeSlot.map((time) => {
     return availableTimeSlotsAfterBooked.includes(time);
   });
@@ -213,9 +213,9 @@ const DateTime = ({ appointmentData }) => {
     }
   };
   useEffect(() => {
-    // Set mounted to true after component mounts on client
+    // Set mounted to true after component mounts on client---------------------------------
     setMounted(true);
-    // Set selected date
+    // Set selected date--------------------------------------------------------
     dispatch(
       setSelectedDate(
         new Date(date).toLocaleDateString("en-US", {
