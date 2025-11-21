@@ -265,8 +265,7 @@ const DateTime = ({ appointmentData }) => {
       dispatch(setTime(null));
     }
   }, [selectedTime, trackingDate, date, dispatch]);
-  console.log("trackingDate", trackingDate.current);
-  console.log("date", date);
+  
   const handleNext = () => {
     dispatch(setStep("review"));
     router.push("/booking/review");
