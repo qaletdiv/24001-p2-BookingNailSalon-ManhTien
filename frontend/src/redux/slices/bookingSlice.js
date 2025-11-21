@@ -64,6 +64,14 @@ const bookingSlice = createSlice({
     setSelectedDate: (state, action) => {
       state.currentBooking.selectedDate = action.payload;
     },
+    resetBooking: (state) => {
+      // Reset to initial state
+      state.currentBooking = {
+        ...initialState.currentBooking,
+      };
+      state.loading = false;
+      state.error = null;
+    },
   },
 });
 
@@ -80,5 +88,6 @@ export const {
   setStep,
   setTime,
   setSelectedDate,
+  resetBooking,
 } = bookingSlice.actions;
 export default bookingSlice.reducer;

@@ -106,7 +106,7 @@ const OptionsList = () => {
               </button> */}
               <button
                 onClick={() => handleRemoveService(selected.id)}
-                className="bg-foreground text-neutral-900 px-4 py-2 rounded-full text-sm md:text-base"
+                className="shadow-lg bg-foreground text-neutral-900 px-4 py-2 rounded-full text-sm md:text-base "
               >
                 Remove
               </button>
@@ -116,13 +116,13 @@ const OptionsList = () => {
         <div className="flex justify-center items-center gap-4 mt-4 lg:w-3/4  md:w-[80%] w-full mx-auto">
           <button
             onClick={handleAddMoreServices}
-            className="bg-foreground text-base md:text-xl w-1/2 md:w-3/4 font-bold text-neutral-900 px-4 py-2 rounded-full "
+            className="shadow-lg bg-foreground text-base md:text-xl w-1/2 md:w-3/4 font-bold text-neutral-900 px-4 py-2 rounded-full "
           >
             Add more services
           </button>
           <button
             onClick={handleNext}
-            className="bg-foreground text-base md:text-xl w-1/2 md:w-3/4 font-bold text-neutral-900 px-4 py-2 rounded-full "
+            className="shadow-lg bg-foreground text-base md:text-xl w-1/2 md:w-3/4 font-bold text-neutral-900 px-4 py-2 rounded-full "
           >
             Next
           </button>
