@@ -11,7 +11,8 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import AddMoreServices from "./addmoreervices/AddMoreServices";
 import AddMoreStaff from "./addmoreervices/AddMoreStaff";
-const ReviewList = () => {
+import { ArrowLeftIcon } from "lucide-react";
+const OptionsList = () => {
   const [openMoreServices, setOpenMoreServices] = useState(false);
   const [openMoreStaff, setOpenMoreStaff] = useState(false);
 
@@ -54,14 +55,26 @@ const ReviewList = () => {
     dispatch(setStep("datetime"));
     router.push("/booking/datetime");
   };
+  const handleBackToStaff = () => {
+    dispatch(setStep("staff"));
+    router.push("/booking/staff");
+  };
   return (
     <>
+      {/* <div className="flex justify-center w-full items-center">
+        <button
+          onClick={handleBackToStaff}
+          className="text-blue-500 hover:text-blue-600 cursor-pointer flex items-center justify-center"
+        >
+          <ArrowLeftIcon className="w-4 h-4 mr-2" /> <span>Back to staff</span>
+        </button>
+      </div> */}
       <div className="my-4 lg:w-1/2 md:w-[500px] mx-auto text-center">
         <p className="text-center text-lg font-bold ">
           Review your selections below.
         </p>
         <p className=" text-sm text-gray-700">
-          Your can add more services by clicking the Add Service button.
+          You can add more services by clicking the Add Service button.
         </p>
       </div>
       <div className="flex flex-col gap-4 w-full">
@@ -126,4 +139,4 @@ const ReviewList = () => {
   );
 };
 
-export default ReviewList;
+export default OptionsList;

@@ -6,10 +6,10 @@ import { useSelector } from "react-redux";
 function BookingStep() {
   const router = useRouter();
   const { step } = useSelector((state) => state.booking.currentBooking);
-  
+
   useEffect(() => {
     // Default to services if step is not set or doesn't match
-    if ( step === "services") {
+    if (step === "services") {
       router.push("/booking/services");
       return;
     }
@@ -26,6 +26,10 @@ function BookingStep() {
       return;
     }
     if (step === "options") {
+      router.push("/booking/options");
+      return;
+    }
+    if (step === "review") {
       router.push("/booking/review");
       return;
     }
@@ -34,7 +38,7 @@ function BookingStep() {
       return;
     }
   }, [step, router]);
-  
+
   return null;
 }
 
