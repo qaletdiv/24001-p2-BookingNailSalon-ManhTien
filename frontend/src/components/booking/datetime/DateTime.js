@@ -7,6 +7,7 @@ import { useSelector } from "react-redux";
 import { setStep } from "@/redux/slices/bookingSlice";
 import { useRouter } from "next/navigation";
 import { ArrowLeftIcon } from "lucide-react";
+import { useRef } from "react";
 // Helper function to convert time string to minutes since midnight
 const timeToMinutes = (timeStr) => {
   const [time, period] = timeStr.split(" ");
@@ -87,13 +88,14 @@ const DateTime = ({ appointmentData }) => {
   ];
   const router = useRouter();
   const dispatch = useAppDispatch();
-  const [date, setDate] = useState(new Date());
   const [mounted, setMounted] = useState(false);
   const staffData = useSelector((state) => state.staff.staff);
   const [showNextButton, setShowNextButton] = useState(false);
-  const { currentSelected } = useSelector(
+  const { currentSelected, selectedDate } = useSelector(
     (state) => state.booking.currentBooking
   );
+  const [date, setDate] = useState(selectedDate || new Date());
+  const trackingDate = useRef(selectedDate || null);
   const selectedTime = useSelector(
     (state) => state.booking.currentBooking.selectedTimeSlot
   );
@@ -239,7 +241,19 @@ const DateTime = ({ appointmentData }) => {
   // Handle next
   // Handle animation for next button
   useEffect(() => {
-    if (selectedTime) {
+    const formatTrackingDate = new Date(
+      trackingDate.current
+    ).toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    });
+    const formatDate = new Date(date).toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    });
+    if (selectedTime && formatTrackingDate === formatDate) {
       // Small delay to trigger animation
       const timer = setTimeout(() => {
         setShowNextButton(true);
@@ -247,8 +261,12 @@ const DateTime = ({ appointmentData }) => {
       return () => clearTimeout(timer);
     } else {
       setShowNextButton(false);
+      trackingDate.current = date;
+      dispatch(setTime(null));
     }
-  }, [selectedTime]);
+  }, [selectedTime, trackingDate, date, dispatch]);
+  console.log("trackingDate", trackingDate.current);
+  console.log("date", date);
   const handleNext = () => {
     dispatch(setStep("review"));
     router.push("/booking/review");
@@ -270,14 +288,16 @@ const DateTime = ({ appointmentData }) => {
       </div>
       <div>Current Selected Staff: {mounted && filteredStaffData?.name}</div>
       <div className="flex md:flex-row w-full flex-col gap-4 justify-start items-start">
-        <Calendar
-          className="w-full md:w-1/2 "
-          mode="single"
-          selected={date}
-          onSelect={(date) => handleDateSelection(date)}
-          initialFocus
-          disabled={isDateDisabled}
-        />
+        {mounted && (
+          <Calendar
+            className="w-full md:w-1/2 "
+            mode="single"
+            selected={date}
+            onSelect={(date) => handleDateSelection(date)}
+            initialFocus
+            disabled={isDateDisabled}
+          />
+        )}
         <div id="time" className="flex flex-col gap-4 md:w-1/2 w-full mt-4">
           <div id="morning-slots" className="flex flex-col gap-4">
             <h3 className="text-xl md:text-md md:text-left text-center">
