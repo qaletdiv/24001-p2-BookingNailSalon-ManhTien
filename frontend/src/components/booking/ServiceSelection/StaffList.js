@@ -14,7 +14,7 @@ const StaffList = ({ staffData }) => {
   );
   useEffect(() => {
     if (step === "options") {
-      router.push("/booking/review");
+      router.push("/booking/options");
     }
   }, [step, router]);
   // Handle add staff
@@ -32,7 +32,7 @@ const StaffList = ({ staffData }) => {
       })
     );
     dispatch(setStep("options"));
-    router.push("/booking/review");
+    router.push("/booking/options");
   };
   const handleBookAnyStaff = () => {
     dispatch(addStaff({ id: "any", name: "Any available staff" }));
@@ -48,7 +48,7 @@ const StaffList = ({ staffData }) => {
       })
     );
     dispatch(setStep("options"));
-    router.push("/booking/review");
+    router.push("/booking/options");
   };
   return (
     <>

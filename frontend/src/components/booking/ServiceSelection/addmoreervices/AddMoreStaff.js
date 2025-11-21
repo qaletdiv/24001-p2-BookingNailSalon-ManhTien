@@ -17,12 +17,24 @@ const AddMoreStaff = ({ onClose }) => {
     (state) => state.booking.currentBooking
   );
 
-  const filteredStaffData = staffData.filter((staff) => {
-    return (
-      currentSelected.some((selected) => selected.StaffId === staff.id) &&
-      staff.id !== "any"
-    );
-  });
+  // Filter staff data based on current selected
+  let filteredStaffData = [];
+  if(currentSelected.length > 0 && currentSelected[0].StaffId === "any"){
+    filteredStaffData = staffData;  
+  }else{
+    filteredStaffData = staffData.filter((staff) => {
+      return (
+        currentSelected.some((selected) => selected.StaffId === staff.id) &&
+        staff.id !== "any"
+      );
+    });
+  }
+  // const filteredStaffData = staffData.filter((staff) => {
+  //   return (
+  //     currentSelected.some((selected) => selected.StaffId === staff.id) &&
+  //     staff.id !== "any"
+  //   );
+  // });
   // State for closing animation
   const [isClosing, setIsClosing] = useState(false);
   // Handle close

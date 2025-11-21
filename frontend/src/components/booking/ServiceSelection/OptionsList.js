@@ -1,13 +1,18 @@
 "use client";
 import { useSelector } from "react-redux";
-import { clearStaff, removeCurrentSelected } from "@/redux/slices/bookingSlice";
+import {
+  clearStaff,
+  removeCurrentSelected,
+  setStep,
+} from "@/redux/slices/bookingSlice";
 import { clearServices } from "@/redux/slices/bookingSlice";
 import { useAppDispatch } from "@/redux/hooks";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import AddMoreServices from "./addmoreervices/AddMoreServices";
 import AddMoreStaff from "./addmoreervices/AddMoreStaff";
-const ReviewList = () => {
+import { ArrowLeftIcon } from "lucide-react";
+const OptionsList = () => {
   const [openMoreServices, setOpenMoreServices] = useState(false);
   const [openMoreStaff, setOpenMoreStaff] = useState(false);
 
@@ -45,14 +50,31 @@ const ReviewList = () => {
   const handleCloseMoreStaff = () => {
     setOpenMoreStaff(false);
   };
+  // Handle next
+  const handleNext = () => {
+    dispatch(setStep("datetime"));
+    router.push("/booking/datetime");
+  };
+  const handleBackToStaff = () => {
+    dispatch(setStep("staff"));
+    router.push("/booking/staff");
+  };
   return (
     <>
+      {/* <div className="flex justify-center w-full items-center">
+        <button
+          onClick={handleBackToStaff}
+          className="text-blue-500 hover:text-blue-600 cursor-pointer flex items-center justify-center"
+        >
+          <ArrowLeftIcon className="w-4 h-4 mr-2" /> <span>Back to staff</span>
+        </button>
+      </div> */}
       <div className="my-4 lg:w-1/2 md:w-[500px] mx-auto text-center">
         <p className="text-center text-lg font-bold ">
           Review your selections below.
         </p>
         <p className=" text-sm text-gray-700">
-          Your can add more services by clicking the Add Service button.
+          You can add more services by clicking the Add Service button.
         </p>
       </div>
       <div className="flex flex-col gap-4 w-full">
@@ -84,7 +106,7 @@ const ReviewList = () => {
               </button> */}
               <button
                 onClick={() => handleRemoveService(selected.id)}
-                className="bg-foreground text-neutral-900 px-4 py-2 rounded-full text-sm md:text-base"
+                className="shadow-lg bg-foreground text-neutral-900 px-4 py-2 rounded-full text-sm md:text-base "
               >
                 Remove
               </button>
@@ -94,11 +116,14 @@ const ReviewList = () => {
         <div className="flex justify-center items-center gap-4 mt-4 lg:w-3/4  md:w-[80%] w-full mx-auto">
           <button
             onClick={handleAddMoreServices}
-            className="bg-foreground text-base md:text-xl w-1/2 md:w-3/4 font-bold text-neutral-900 px-4 py-2 rounded-full "
+            className="shadow-lg bg-foreground text-base md:text-xl w-1/2 md:w-3/4 font-bold text-neutral-900 px-4 py-2 rounded-full "
           >
             Add more services
           </button>
-          <button className="bg-foreground text-base md:text-xl w-1/2 md:w-3/4 font-bold text-neutral-900 px-4 py-2 rounded-full ">
+          <button
+            onClick={handleNext}
+            className="shadow-lg bg-foreground text-base md:text-xl w-1/2 md:w-3/4 font-bold text-neutral-900 px-4 py-2 rounded-full "
+          >
             Next
           </button>
         </div>
@@ -114,4 +139,4 @@ const ReviewList = () => {
   );
 };
 
-export default ReviewList;
+export default OptionsList;
