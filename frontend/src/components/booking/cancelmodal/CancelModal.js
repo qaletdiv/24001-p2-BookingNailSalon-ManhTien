@@ -21,6 +21,11 @@ const CancelModal = ({ isOpen, onClose }) => {
     } else {
       setIsOpening(false);
     }
+    // scroll not moving when modal is open
+    document.body.style.overflow = isOpen ? "hidden" : "auto";
+    return () => {
+      document.body.style.overflow = "auto";
+    };
   }, [isOpen]);
 
   const handleClose = () => {

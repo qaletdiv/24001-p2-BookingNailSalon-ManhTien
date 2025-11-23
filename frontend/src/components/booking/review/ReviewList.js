@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { ArrowLeftIcon } from "lucide-react";
 import { useAppDispatch } from "@/redux/hooks";
 import { useState, useEffect } from "react";
-import CancelModal from "./cancelModal/CancelModal";
+import CancelModal from "@/components/booking/cancelmodal/CancelModal";
 const ReviewList = () => {
   const [mounted, setMounted] = useState(false);
   const [isCancelModalOpen, setIsCancelModalOpen] = useState(false);
