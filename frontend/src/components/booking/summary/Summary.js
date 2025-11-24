@@ -12,9 +12,7 @@ export default function Summary() {
 
   return (
     <>
-      <p className="text-lg w-full md:3/4 mx-auto">
-        Summary of your appointment
-      </p>
+      <p className="text-lg w-full md:3/4 mx-auto">Your appointment</p>
       <div className="flex justify-center flex-col items-center gap-4 mt-4 lg:w-3/4  md:w-[80%] w-full mx-auto">
         <div className="flex flex-col justify-center items-center gap-4 w-full md:3/4 mx-auto border-2 bg-white border-gray-300 rounded-lg p-4">
           <div className="flex flex-col justify-start items-start gap-4">

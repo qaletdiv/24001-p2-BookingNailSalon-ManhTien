@@ -483,6 +483,18 @@ app.get("/api/services", (req, res, next) => {
 app.get("/api/appointments", (req, res, next) => {
   res.send(appointments);
 });
+app.post("/api/appointments", (req, res, next) => {
+  const { customer, services, date, timeSlot } = req.body;
+  const newAppointment = {
+    id: appointments.length + 1,
+    customer,
+    services,
+    date,
+    timeSlot,
+  };
+  appointments.push(newAppointment);
+  res.status(201).json(newAppointment);
+});
 app.listen(PORT, () => {
   console.log(`Listen to ${PORT}`);
 });
