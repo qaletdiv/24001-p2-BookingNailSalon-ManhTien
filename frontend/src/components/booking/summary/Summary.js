@@ -4,12 +4,13 @@ import { bookAppointment } from "@/redux/slices/bookingSlice";
 import { useAppDispatch } from "@/redux/hooks";
 import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
+import { resetBooking } from "@/redux/slices/bookingSlice";
 export default function Summary() {
   // Get current booking from redux
   const currentBooking = useSelector((state) => state.booking.currentBooking);
   const currentSelected = currentBooking.currentSelected;
   const services = currentSelected.map((selected) => selected.ServiceName);
-  const technicians = currentSelected.map((selected) => selected.StaffName);
+  const technicians = currentBooking.staff;
   const date = currentBooking.selectedDate;
   const time = currentBooking.selectedTimeSlot;
   const customerName = currentBooking.customer.fullName;
@@ -18,26 +19,19 @@ export default function Summary() {
 
   const dispatch = useAppDispatch();
   const router = useRouter();
-  // Set mounted to true after component mounts on client
+  // Set mounted to true after component mounts on client---------------------------------
   useEffect(() => {
     setMounted(true);
   }, []);
-  // Handle confirm booking
+
+  // Handle confirm booking ---------------------------------------------------------
+  // Prepare services data
   const servicesData = currentSelected.map((selected) => ({
     id: selected.ServiceId,
     name: selected.ServiceName,
     duration: selected.duration,
     price: selected.price,
   }));
-  const staffData = currentSelected.reduce((acc, selected) => {
-    acc[selected.StaffId] = {
-      id: selected.StaffId,
-      name: selected.StaffName,
-    };
-    return acc;
-  }, {});
-  console.log(staffData);
-  // Handle confirm booking
   const handleConfirmBooking = async () => {
     // Prepare booking data
     const bookingData = {
@@ -47,7 +41,7 @@ export default function Summary() {
         email: currentBooking.customer.email || "",
       },
       services: servicesData,
-      staff: staffData,
+      staff: technicians,
       date: currentBooking.selectedDate,
       timeSlot: currentBooking.selectedTimeSlot,
       notes: currentBooking.customer.notes || "",
@@ -62,6 +56,8 @@ export default function Summary() {
       console.error("Failed to create appointment:", error);
       // Show error message to user
     }
+    dispatch(resetBooking());
+    router.push("/");
   };
 
   return (
@@ -88,7 +84,7 @@ export default function Summary() {
               <p className="text-lg">
                 Technicians:{" "}
                 <span className="font-bold text-blue-500">
-                  {technicians.join(", ")}
+                  {technicians.name || "Any available staff"}
                 </span>
               </p>
               <p className="text-lg">

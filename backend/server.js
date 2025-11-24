@@ -489,13 +489,14 @@ app.get("/api/appointments", (req, res, next) => {
   res.send(appointments);
 });
 app.post("/api/appointments", (req, res, next) => {
-  const { customer, services, date, timeSlot } = req.body;
+  const { customer, services, staff, date, timeSlot } = req.body;
   console.log("Received appointment request:", req.body);
 
   const newAppointment = {
     id: appointments.length + 1,
     customer,
     services,
+    staff,
     date,
     timeSlot,
   };

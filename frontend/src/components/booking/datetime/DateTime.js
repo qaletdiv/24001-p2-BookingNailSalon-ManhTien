@@ -7,6 +7,7 @@ import { useSelector } from "react-redux";
 import { setStep } from "@/redux/slices/bookingSlice";
 import { useRouter } from "next/navigation";
 import { ArrowLeftIcon } from "lucide-react";
+import { addStaff } from "@/redux/slices/bookingSlice";
 import { useRef } from "react";
 // Helper function to convert time string to minutes since midnight
 const timeToMinutes = (timeStr) => {
@@ -265,9 +266,12 @@ const DateTime = ({ appointmentData }) => {
       dispatch(setTime(null));
     }
   }, [selectedTime, trackingDate, date, dispatch]);
-  
+
   const handleNext = () => {
     dispatch(setStep("review"));
+    dispatch(
+      addStaff({ id: filteredStaffData.id, name: filteredStaffData.name })
+    );
     router.push("/booking/review");
   };
   const handleBackToOptions = () => {
