@@ -1,5 +1,10 @@
 const express = require("express");
 const app = express();
+const cors = require("cors");
+
+// Add middleware
+app.use(cors());
+app.use(express.json());
 const PORT = 4000;
 const appointments = [
   {
@@ -485,6 +490,8 @@ app.get("/api/appointments", (req, res, next) => {
 });
 app.post("/api/appointments", (req, res, next) => {
   const { customer, services, date, timeSlot } = req.body;
+  console.log("Received appointment request:", req.body);
+
   const newAppointment = {
     id: appointments.length + 1,
     customer,
@@ -493,6 +500,10 @@ app.post("/api/appointments", (req, res, next) => {
     timeSlot,
   };
   appointments.push(newAppointment);
+
+  console.log("New appointment added:", newAppointment);
+  console.log("Total appointments now:", appointments.length);
+
   res.status(201).json(newAppointment);
 });
 app.listen(PORT, () => {

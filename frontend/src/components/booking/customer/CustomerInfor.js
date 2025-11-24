@@ -3,7 +3,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { ArrowLeftIcon } from "lucide-react";
 import CancelModal from "@/components/booking/cancelmodal/CancelModal";
-import { setCustomer } from "@/redux/slices/bookingSlice";
+import { setCustomer, setStep } from "@/redux/slices/bookingSlice";
 import { useAppDispatch } from "@/redux/hooks";
 export default function CustomerInfor() {
   const dispatch = useAppDispatch();
@@ -35,6 +35,7 @@ export default function CustomerInfor() {
       return;
     }
     dispatch(setCustomer({ fullName, phoneNumber, email, notes }));
+    dispatch(setStep("summary"));
     router.push("/booking/summary");
   };
   return (
