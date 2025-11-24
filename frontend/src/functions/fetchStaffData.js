@@ -1,5 +1,5 @@
 export async function fetchStaffData() {
-    const res = await fetch(`${process.env.API_SERVER}/staff`)
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_SERVER}/api/staff`)
     if (!res.ok) {
       throw new Error("Failed to fetch staff data")
     }

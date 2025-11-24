@@ -489,7 +489,7 @@ app.get("/api/appointments", (req, res, next) => {
   res.send(appointments);
 });
 app.post("/api/appointments", (req, res, next) => {
-  const { customer, services, staff, date, timeSlot } = req.body;
+  const { customer, services, staff, date, timeSlot, totalDuration, totalPrice } = req.body;
   console.log("Received appointment request:", req.body);
 
   const newAppointment = {
@@ -499,6 +499,8 @@ app.post("/api/appointments", (req, res, next) => {
     staff,
     date,
     timeSlot,
+    totalDuration,
+    totalPrice,
   };
   appointments.push(newAppointment);
 

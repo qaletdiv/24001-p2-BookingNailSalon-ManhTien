@@ -5,6 +5,14 @@ import { useAppDispatch } from "@/redux/hooks";
 import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 import { resetBooking } from "@/redux/slices/bookingSlice";
+// Helper function to format date to YYYY-MM-DD -------------------------------------------------------->
+const formatDateToYYYYMMDD = (date) => {
+  const d = new Date(date);
+  const year = d.getFullYear();
+  const month = String(d.getMonth() + 1).padStart(2, '0');
+  const day = String(d.getDate()).padStart(2, '0');
+  return `${year}-${month}-${day}`;
+};
 export default function Summary() {
   // Get current booking from redux
   const currentBooking = useSelector((state) => state.booking.currentBooking);
@@ -32,6 +40,9 @@ export default function Summary() {
     duration: selected.duration,
     price: selected.price,
   }));
+  const totalDuration = currentSelected.reduce((acc, selected) => acc + selected.duration, 0);
+  const totalPrice = currentSelected.reduce((acc, selected) => acc + selected.price, 0);
+  
   const handleConfirmBooking = async () => {
     // Prepare booking data
     const bookingData = {
@@ -42,7 +53,9 @@ export default function Summary() {
       },
       services: servicesData,
       staff: technicians,
-      date: currentBooking.selectedDate,
+      date: formatDateToYYYYMMDD(currentBooking.selectedDate),
+      totalDuration: totalDuration,
+      totalPrice: totalPrice,
       timeSlot: currentBooking.selectedTimeSlot,
       notes: currentBooking.customer.notes || "",
     };
