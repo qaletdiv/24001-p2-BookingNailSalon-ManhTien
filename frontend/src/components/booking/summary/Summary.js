@@ -5,12 +5,13 @@ import { useAppDispatch } from "@/redux/hooks";
 import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 import { resetBooking } from "@/redux/slices/bookingSlice";
+import CancelModal from "@/components/booking/cancelmodal/CancelModal";
 // Helper function to format date to YYYY-MM-DD -------------------------------------------------------->
 const formatDateToYYYYMMDD = (date) => {
   const d = new Date(date);
   const year = d.getFullYear();
-  const month = String(d.getMonth() + 1).padStart(2, '0');
-  const day = String(d.getDate()).padStart(2, '0');
+  const month = String(d.getMonth() + 1).padStart(2, "0");
+  const day = String(d.getDate()).padStart(2, "0");
   return `${year}-${month}-${day}`;
 };
 export default function Summary() {
@@ -24,7 +25,7 @@ export default function Summary() {
   const customerName = currentBooking.customer.fullName;
   const customerPhone = currentBooking.customer.phoneNumber;
   const [mounted, setMounted] = useState(false);
-
+  const [isCancelModalOpen, setIsCancelModalOpen] = useState(false);
   const dispatch = useAppDispatch();
   const router = useRouter();
   // Set mounted to true after component mounts on client---------------------------------
@@ -40,9 +41,15 @@ export default function Summary() {
     duration: selected.duration,
     price: selected.price,
   }));
-  const totalDuration = currentSelected.reduce((acc, selected) => acc + selected.duration, 0);
-  const totalPrice = currentSelected.reduce((acc, selected) => acc + selected.price, 0);
-  
+  const totalDuration = currentSelected.reduce(
+    (acc, selected) => acc + selected.duration,
+    0
+  );
+  const totalPrice = currentSelected.reduce(
+    (acc, selected) => acc + selected.price,
+    0
+  );
+
   const handleConfirmBooking = async () => {
     // Prepare booking data
     const bookingData = {
@@ -109,13 +116,16 @@ export default function Summary() {
             </div>
           </div>
           <div className="flex justify-center flex-col items-center gap-4 mt-4 lg:w-3/4   w-full mx-auto">
-            <div className="flex justify-center items-center gap-4 w-full">
+            {/* <div className="flex justify-center items-center gap-4 w-full">
               <button className="shadow-lg bg-white text-base md:text-xl w-full font-bold text-neutral-900 px-4 py-2 rounded-full ">
                 Book Another Appointment
               </button>
-            </div>
+            </div> */}
             <div className="w-full flex justify-center items-center gap-4">
-              <button className="shadow-lg bg-white text-base md:text-xl w-1/2 md:w-3/4 font-bold text-neutral-900 px-4 py-2 rounded-full ">
+              <button
+                onClick={() => setIsCancelModalOpen(true)}
+                className="shadow-lg bg-white text-base md:text-xl w-1/2 md:w-3/4 font-bold text-neutral-900 px-4 py-2 rounded-full "
+              >
                 Cancel
               </button>
               <button
@@ -127,6 +137,10 @@ export default function Summary() {
             </div>
           </div>
         </div>
+        <CancelModal
+          isOpen={isCancelModalOpen}
+          onClose={() => setIsCancelModalOpen(false)}
+        />
       </>
     )
   );
