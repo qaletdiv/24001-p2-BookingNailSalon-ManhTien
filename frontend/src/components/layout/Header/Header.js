@@ -3,8 +3,9 @@
 import Link from "next/link";
 import Image from "next/image";
 import { MenuIcon, X } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { usePathname } from "next/navigation";
+
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const currentPage = usePathname();
@@ -16,7 +17,16 @@ const Header = () => {
   const closeMenu = () => {
     setIsMenuOpen(false);
   };
-
+  useEffect(() => {
+    if (isMenuOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "auto";
+    }
+    return () => {
+      document.body.style.overflow = "auto";
+    }
+  }, [isMenuOpen]);
   return (
     <>
       <header className="fixed w-full shadow-2xs bg-black opacity-90 md:px-12 px-2 py-0 flex justify-between items-center text-neutral-100 z-50">
