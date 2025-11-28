@@ -1,4 +1,26 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import axios from "axios";
+
+export const bookAppointment = createAsyncThunk(
+  "booking/bookAppointment",
+  async (bookingData, { rejectWithValue }) => {
+    try {
+      const response = await axios.post(
+        `${process.env.NEXT_PUBLIC_API_SERVER}/api/appointments`,
+        bookingData,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      console.log("Appointment created successfully:", response.data);
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response.data || error.message);
+    }
+  }
+);
 const initialState = {
   bookings: [], // All completed bookings
   currentBooking: {
@@ -78,6 +100,19 @@ const bookingSlice = createSlice({
     clearCustomer: (state) => {
       state.currentBooking.customer = {};
     },
+  },
+  extraReducers: (builder) => {
+    builder.addCase(bookAppointment.pending, (state) => {
+      state.loading = true;
+    });
+    builder.addCase(bookAppointment.fulfilled, (state, action) => {
+      state.loading = false;
+    });
+
+    builder.addCase(bookAppointment.rejected, (state, action) => {
+      state.loading = false;
+      state.error = action.payload;
+    });
   },
 });
 
