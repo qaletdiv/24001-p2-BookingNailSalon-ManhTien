@@ -3,7 +3,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import styles from "./Hero.module.css";
-const images = ["/homepage1.jpeg", "/homepage2.jpeg", "/homepage3.jpeg"];
+const images = ["/hero-1.jpeg", "/hero-2.jpeg", "/hero-3.webp"];
 const Hero = () => {
   const [index, setIndex] = useState(0);
   const timeoutRef = useRef();
@@ -25,12 +25,19 @@ const Hero = () => {
         <p className="md:text-[32px] text-[18px] text-shadow-lg/30">
           Where elegance is in every touch.
         </p>
-        {/* <Link
+        <div className="flex gap-4">
+        <Link
           href={"/booking"}
           className="px-8 py-4 shadow-lg/50 rounded-xl text-xl text-neutral-900 font-bold bg-foreground"
         >
           Book Now
-        </Link> */}
+        </Link>
+        <Link
+          href={"/services"}
+          className="px-8 py-4 shadow-lg/50 rounded-xl text-xl text-neutral-900 font-bold bg-foreground"
+        >
+          Our Services        </Link>
+        </div>
       </div>
       <div
         className="flex h-full w-full transition-transform duration-500 ease-out "
@@ -54,12 +61,12 @@ const Hero = () => {
         className="absolute inset-0 z-10 pointer-events-none
                   backdrop-brightness-60 "
       />
-      <div className="z-50  absolute top-[15%] right-[5%] flex flex-col gap-4">
+      <div className="z-50  absolute top-[20%] md:top-[18%] right-[5%] flex flex-col gap-4">
         <Link
           href="https://facebook.com"
           target="_blank"
           rel="noopener noreferrer"
-          className="size-14  text-background hover:text-foreground duration-300 transition-colors cursor-pointer"
+          className="size-10 md:size-14 text-background hover:text-foreground duration-300 transition-colors cursor-pointer"
         >
           <svg
             className="drop-shadow-xl/50"
@@ -78,7 +85,7 @@ const Hero = () => {
           href="https://instagram.com"
           target="_blank"
           rel="noopener noreferrer"
-          className="size-14 text-background hover:text-foreground duration-300 transition-colors cursor-pointer"
+          className="size-10 md:size-14 text-background hover:text-foreground duration-300 transition-colors cursor-pointer"
         >
           <svg
             className="drop-shadow-xl/50"
