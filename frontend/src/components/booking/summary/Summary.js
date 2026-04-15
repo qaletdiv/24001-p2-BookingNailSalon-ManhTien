@@ -1,12 +1,12 @@
 "use client";
+
 import { useSelector } from "react-redux";
-import { bookAppointment } from "@/redux/slices/bookingSlice";
+import { bookAppointment, resetBooking } from "@/redux/slices/bookingSlice";
 import { useAppDispatch } from "@/redux/hooks";
 import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
-import { resetBooking } from "@/redux/slices/bookingSlice";
-import CancelModal from "@/components/booking/cancelmodal/CancelModal";
-// Helper function to format date to YYYY-MM-DD -------------------------------------------------------->
+import { useBooking } from "@/context/BookingContext";
+
 const formatDateToYYYYMMDD = (date) => {
   const d = new Date(date);
   const year = d.getFullYear();
@@ -14,8 +14,8 @@ const formatDateToYYYYMMDD = (date) => {
   const day = String(d.getDate()).padStart(2, "0");
   return `${year}-${month}-${day}`;
 };
+
 export default function Summary() {
-  // Get current booking from redux
   const currentBooking = useSelector((state) => state.booking.currentBooking);
   const currentSelected = currentBooking.currentSelected;
   const services = currentSelected.map((selected) => selected.ServiceName);
@@ -25,16 +25,14 @@ export default function Summary() {
   const customerName = currentBooking.customer.fullName;
   const customerPhone = currentBooking.customer.phoneNumber;
   const [mounted, setMounted] = useState(false);
-  const [isCancelModalOpen, setIsCancelModalOpen] = useState(false);
   const dispatch = useAppDispatch();
   const router = useRouter();
-  // Set mounted to true after component mounts on client---------------------------------
+  const { openCancelModal } = useBooking();
+
   useEffect(() => {
     setMounted(true);
   }, []);
 
-  // Handle confirm booking ---------------------------------------------------------
-  // Prepare services data
   const servicesData = currentSelected.map((selected) => ({
     id: selected.ServiceId,
     name: selected.ServiceName,
@@ -51,7 +49,6 @@ export default function Summary() {
   );
 
   const handleConfirmBooking = async () => {
-    // Prepare booking data
     const bookingData = {
       customer: {
         name: currentBooking.customer.fullName,
@@ -70,11 +67,8 @@ export default function Summary() {
     try {
       const result = await dispatch(bookAppointment(bookingData)).unwrap();
       console.log("Appointment created successfully:", result);
-      // Navigate to confirmation page or show success message
-      // router.push("/booking/confirmed");
     } catch (error) {
       console.error("Failed to create appointment:", error);
-      // Show error message to user
     }
     dispatch(resetBooking());
     router.push("/");
@@ -116,14 +110,9 @@ export default function Summary() {
             </div>
           </div>
           <div className="flex justify-center flex-col items-center gap-4 mt-4 lg:w-3/4   w-full mx-auto">
-            {/* <div className="flex justify-center items-center gap-4 w-full">
-              <button className="shadow-lg bg-white text-base md:text-xl w-full font-bold text-neutral-900 px-4 py-2 rounded-full ">
-                Book Another Appointment
-              </button>
-            </div> */}
             <div className="w-full flex justify-center items-center gap-4">
               <button
-                onClick={() => setIsCancelModalOpen(true)}
+                onClick={openCancelModal}
                 className="shadow-lg bg-white text-base md:text-xl w-1/2 md:w-3/4 font-bold text-neutral-900 px-4 py-2 rounded-full "
               >
                 Cancel
@@ -137,10 +126,6 @@ export default function Summary() {
             </div>
           </div>
         </div>
-        <CancelModal
-          isOpen={isCancelModalOpen}
-          onClose={() => setIsCancelModalOpen(false)}
-        />
       </>
     )
   );

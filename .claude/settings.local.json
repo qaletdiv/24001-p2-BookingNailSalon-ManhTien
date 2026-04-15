@@ -1,0 +1,14 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm install *)",
+      "Bash(chmod +x /Users/tientrang/Documents/GitHub/24001-p2-BookingNailSalon-ManhTien/frontend/node_modules/.bin/napi-postinstall)",
+      "Bash(npm run *)",
+      "Bash(kill %1)",
+      "Bash(git checkout *)",
+      "Bash(rm /Users/tientrang/Documents/GitHub/24001-p2-BookingNailSalon-ManhTien/frontend/src/components/booking/bookingstep/BookingStep.js)",
+      "Bash(rmdir /Users/tientrang/Documents/GitHub/24001-p2-BookingNailSalon-ManhTien/frontend/src/components/booking/bookingstep/)",
+      "Bash(npx next *)"
+    ]
+  }
+}

@@ -1,23 +1,16 @@
 "use client";
-import { addStaff } from "@/redux/slices/bookingSlice";
+
+import { addStaff, setCurrentSelected } from "@/redux/slices/bookingSlice";
 import { useAppDispatch } from "@/redux/hooks";
-import { useRouter } from "next/navigation";
-import { setStep, setCurrentSelected } from "@/redux/slices/bookingSlice";
 import { useSelector } from "react-redux";
 import { v4 as uuidv4 } from "uuid";
-import { useEffect } from "react";
+import { useBooking } from "@/context/BookingContext";
+
 const StaffList = ({ staffData }) => {
-  const router = useRouter();
   const dispatch = useAppDispatch();
-  const { services, step } = useSelector(
-    (state) => state.booking.currentBooking
-  );
-  useEffect(() => {
-    if (step === "options") {
-      router.push("/booking/options");
-    }
-  }, [step, router]);
-  // Handle add staff
+  const { goNext } = useBooking();
+  const { services } = useSelector((state) => state.booking.currentBooking);
+
   const handleAddStaff = (id, name) => {
     dispatch(addStaff({ id, name }));
     dispatch(
@@ -31,9 +24,9 @@ const StaffList = ({ staffData }) => {
         price: services.price,
       })
     );
-    dispatch(setStep("options"));
-    router.push("/booking/options");
+    goNext();
   };
+
   const handleBookAnyStaff = () => {
     dispatch(addStaff({ id: "any", name: "Any available staff" }));
     dispatch(
@@ -47,9 +40,9 @@ const StaffList = ({ staffData }) => {
         price: services.price,
       })
     );
-    dispatch(setStep("options"));
-    router.push("/booking/options");
+    goNext();
   };
+
   return (
     <>
       <div className="overflow-hidden grid lg:w-3/4 md:w-[500px] w-full mx-auto grid-cols-1 md:grid-cols-2  gap-4 mt-8">

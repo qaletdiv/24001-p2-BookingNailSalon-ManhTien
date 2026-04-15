@@ -1,31 +1,30 @@
 "use client";
 
 import { useState } from "react";
-import { ChevronLeft, Check, Clock10Icon } from "lucide-react";
+import { ChevronLeft } from "lucide-react";
 import ServiceList from "@/components/layout/booking/ServiceList";
 import { addService } from "@/redux/slices/bookingSlice";
-import { setStep } from "@/redux/slices/bookingSlice";
-import { useRouter } from "next/navigation";
 import { useAppDispatch } from "@/redux/hooks";
+import { useBooking } from "@/context/BookingContext";
+
 const ServiceCategories = ({ servicesData }) => {
-  const router = useRouter();
   const dispatch = useAppDispatch();
-  // Category open state: category name -> boolean
+  const { goNext } = useBooking();
   const [openCats, setOpenCats] = useState({});
-  // Toggle category open state
+
   const toggleCat = (name) => {
     setOpenCats((prev) => ({ ...prev, [name]: !prev[name] }));
   };
-  // Handle add service
+
   const handleAddService = (id, name, duration, price) => {
     dispatch(addService({ id, name, duration, price: Number(price) }));
-    dispatch(setStep("staff"));
-    router.push("/booking/staff");
+    goNext();
   };
+
   return (
     <div className="mt-8">
       {servicesData.map((cat) => {
-        const isOpen = !!openCats[cat.name]; // closed by default
+        const isOpen = !!openCats[cat.name];
         const panelId = `services-${cat.name
           .replace(/\s+/g, "-")
           .toLowerCase()}`;
@@ -46,7 +45,6 @@ const ServiceCategories = ({ servicesData }) => {
               />
             </button>
 
-            {/* Smooth expand/collapse instead of conditional unmount */}
             <div
               id={panelId}
               className={`grid transition-all duration-300 ease-out motion-reduce:transition-none ${

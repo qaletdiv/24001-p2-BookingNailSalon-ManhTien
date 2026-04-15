@@ -1,33 +1,31 @@
 "use client";
 import { Calendar } from "@/components/ui/calendar";
-import { useState, useEffect } from "react";
-import { setTime, setSelectedDate } from "@/redux/slices/bookingSlice";
+import { useState, useEffect, useRef } from "react";
+import { setTime, setSelectedDate, addStaff } from "@/redux/slices/bookingSlice";
 import { useAppDispatch } from "@/redux/hooks";
 import { useSelector } from "react-redux";
-import { setStep } from "@/redux/slices/bookingSlice";
-import { useRouter } from "next/navigation";
 import { ArrowLeftIcon } from "lucide-react";
-import { addStaff } from "@/redux/slices/bookingSlice";
-import { useRef } from "react";
+import { useBooking } from "@/context/BookingContext";
+
 // Helper function to convert time string to minutes since midnight
 const timeToMinutes = (timeStr) => {
   const [time, period] = timeStr.split(" ");
   const [hours, minutes] = time.split(":").map(Number);
   let totalMinutes = hours * 60 + minutes;
   if (period === "PM" && hours !== 12) {
-    totalMinutes += 12 * 60; // Add 12 hours for PM
+    totalMinutes += 12 * 60;
   }
   if (period === "AM" && hours === 12) {
-    totalMinutes -= 12 * 60; // Subtract 12 hours for 12 AM
+    totalMinutes -= 12 * 60;
   }
   return totalMinutes;
 };
+
 // Helper function to convert minutes to time string
 const minutesToTime = (minutes) => {
   const endHours24 = Math.floor(minutes / 60) % 24;
   const endMinutes = minutes % 60;
 
-  // Convert to 12-hour format with AM/PM
   let endHours = endHours24;
   let endPeriod = "AM";
   if (endHours24 === 0) {
@@ -45,50 +43,23 @@ const minutesToTime = (minutes) => {
 
   return `${endHours}:${endMinutes.toString().padStart(2, "0")} ${endPeriod}`;
 };
+
 const DateTime = ({ appointmentData }) => {
   const arrTimeSlot = [
-    "9:00 AM",
-    "9:15 AM",
-    "9:30 AM",
-    "9:45 AM",
-    "10:00 AM",
-    "10:15 AM",
-    "10:30 AM",
-    "10:45 AM",
-    "11:00 AM",
-    "11:15 AM",
-    "11:30 AM",
-    "11:45 AM",
-    "12:00 PM",
-    "12:15 PM",
-    "12:30 PM",
-    "12:45 PM",
-    "1:00 PM",
-    "1:15 PM",
-    "1:30 PM",
-    "1:45 PM",
-    "2:00 PM",
-    "2:15 PM",
-    "2:30 PM",
-    "2:45 PM",
-    "3:00 PM",
-    "3:15 PM",
-    "3:30 PM",
-    "3:45 PM",
-    "4:00 PM",
-    "4:15 PM",
-    "4:30 PM",
-    "4:45 PM",
-    "5:00 PM",
-    "5:15 PM",
-    "5:30 PM",
-    "5:45 PM",
-    "6:00 PM",
-    "6:15 PM",
-    "6:30 PM",
+    "9:00 AM", "9:15 AM", "9:30 AM", "9:45 AM",
+    "10:00 AM", "10:15 AM", "10:30 AM", "10:45 AM",
+    "11:00 AM", "11:15 AM", "11:30 AM", "11:45 AM",
+    "12:00 PM", "12:15 PM", "12:30 PM", "12:45 PM",
+    "1:00 PM", "1:15 PM", "1:30 PM", "1:45 PM",
+    "2:00 PM", "2:15 PM", "2:30 PM", "2:45 PM",
+    "3:00 PM", "3:15 PM", "3:30 PM", "3:45 PM",
+    "4:00 PM", "4:15 PM", "4:30 PM", "4:45 PM",
+    "5:00 PM", "5:15 PM", "5:30 PM", "5:45 PM",
+    "6:00 PM", "6:15 PM", "6:30 PM",
   ];
-  const router = useRouter();
+
   const dispatch = useAppDispatch();
+  const { goNext, goBack } = useBooking();
   const [mounted, setMounted] = useState(false);
   const staffData = useSelector((state) => state.staff.staff);
   const [showNextButton, setShowNextButton] = useState(false);
@@ -100,27 +71,17 @@ const DateTime = ({ appointmentData }) => {
   const selectedTime = useSelector(
     (state) => state.booking.currentBooking.selectedTimeSlot
   );
-  // Set mounted to true after component mounts on client
-  // useEffect(() => {
-  //   setMounted(true);
-  // }, []);
 
-  //--------------------------------- Filter data ---------------------------------
-  // Get current selected staff id
+  // Filter data
   const currentSelectedStaffId = currentSelected.map(
     (selected) => selected.StaffId
   );
-
-  // Filter staff data based on current selected staff id
   const filteredStaffData = staffData.find((staff) =>
     currentSelectedStaffId.includes(staff.id)
   );
-  // Filter appointment data based on current selected staff
   const filteredAppointmentData = appointmentData.filter((appointment) =>
     currentSelectedStaffId.includes(appointment.staff.id)
   );
-
-  // Filter appointment data based on date
   const filteredAppointmentByCurrentDate = filteredAppointmentData.filter(
     (appointment) => {
       const curDate = new Date(date);
@@ -131,26 +92,20 @@ const DateTime = ({ appointmentData }) => {
     }
   );
 
-  //----------------------------schedule--------------------------
+  // Schedule
   const curDay = new Date(date)
-    .toLocaleDateString("en-US", {
-      weekday: "long",
-    })
+    .toLocaleDateString("en-US", { weekday: "long" })
     .toLowerCase();
   const scheduleByCurrentStaff = filteredStaffData?.schedule;
   const scheduleByCurrentDay =
     scheduleByCurrentStaff && scheduleByCurrentStaff[curDay];
 
-  //--------------------------------- available time slots ---------------------------------
-
-  //booked time slots
+  // Booked time slots
   const bookedTimeSlots = filteredAppointmentByCurrentDate.reduce(
     (acc, appointment) => {
       const startTime = appointment.timeSlot;
       const convertEndTime = (startTime, duration) => {
-        // Split time and period (AM/PM)
         const totalMinutes = timeToMinutes(startTime) + duration;
-
         return minutesToTime(totalMinutes);
       };
       const endTime = convertEndTime(startTime, appointment.totalDuration);
@@ -168,47 +123,38 @@ const DateTime = ({ appointmentData }) => {
     },
     []
   );
-  //available time slots before booked--------------------------------------------------------
+
+  // Available time slots
   const availableTimeSlots = arrTimeSlot.filter((time) => {
     if (!scheduleByCurrentDay || scheduleByCurrentDay.length < 2) {
-      return false; // Return no available slots if schedule is invalid
+      return false;
     }
     const startTime = scheduleByCurrentDay[0];
     const endTime = scheduleByCurrentDay[1];
-
     if (startTime === "Off") {
       return false;
-    } else {
-      const timeMinutes = timeToMinutes(time);
-      const startMinutes = timeToMinutes(startTime);
-      const endMinutes = timeToMinutes(endTime);
-      if (timeMinutes >= startMinutes && timeMinutes <= endMinutes) {
-        return true;
-      }
     }
+    const timeMinutes = timeToMinutes(time);
+    const startMinutes = timeToMinutes(startTime);
+    const endMinutes = timeToMinutes(endTime);
+    return timeMinutes >= startMinutes && timeMinutes <= endMinutes;
   });
 
-  //all booked time
   const allBookedTime = bookedTimeSlots.reduce((acc, bookedTime) => {
     return acc.concat(bookedTime.bookedTime);
   }, []);
 
-  //available time slots after booked--------------------------------------------------------
-  const availableTimeSlotsAfterBooked = availableTimeSlots.filter((time) => {
-    return !allBookedTime.includes(time);
-  });
+  const availableTimeSlotsAfterBooked = availableTimeSlots.filter(
+    (time) => !allBookedTime.includes(time)
+  );
 
-  //active time slots--------------------------------------------------------
-  const activeTime = arrTimeSlot.map((time) => {
-    return availableTimeSlotsAfterBooked.includes(time);
-  });
-
-  // Check if the date is disabled --------------------------------- ------------------------
+  const activeTime = arrTimeSlot.map((time) =>
+    availableTimeSlotsAfterBooked.includes(time)
+  );
 
   const isDateDisabled = (date) => {
     const today = new Date();
     today.setHours(0, 0, 0, 0);
-
     const checkDate = new Date(date);
     checkDate.setHours(0, 0, 0, 0);
     return checkDate < today;
@@ -221,10 +167,9 @@ const DateTime = ({ appointmentData }) => {
       dispatch(setTime(time));
     }
   };
+
   useEffect(() => {
-    // Set mounted to true after component mounts on client---------------------------------
     setMounted(true);
-    // Set selected date--------------------------------------------------------
     dispatch(
       setSelectedDate(
         new Date(date).toLocaleDateString("en-US", {
@@ -235,11 +180,11 @@ const DateTime = ({ appointmentData }) => {
       )
     );
   }, [dispatch, date]);
-  // Handle date selection
+
   const handleDateSelection = (date) => {
     setDate(date);
   };
-  // Handle next
+
   // Handle animation for next button
   useEffect(() => {
     const formatTrackingDate = new Date(
@@ -255,7 +200,6 @@ const DateTime = ({ appointmentData }) => {
       day: "numeric",
     });
     if (selectedTime && formatTrackingDate === formatDate) {
-      // Small delay to trigger animation
       const timer = setTimeout(() => {
         setShowNextButton(true);
       }, 50);
@@ -268,24 +212,20 @@ const DateTime = ({ appointmentData }) => {
   }, [selectedTime, trackingDate, date, dispatch]);
 
   const handleNext = () => {
-    dispatch(setStep("review"));
     dispatch(
       addStaff({ id: filteredStaffData.id, name: filteredStaffData.name })
     );
-    router.push("/booking/review");
+    goNext();
   };
-  const handleBackToOptions = () => {
-    dispatch(setStep("options"));
-    router.push("/booking/options");
-  };
+
   return (
     <>
       <div className="flex justify-center w-full items-center">
         <button
-          onClick={handleBackToOptions}
+          onClick={goBack}
           className="text-blue-500 hover:text-blue-600 cursor-pointer flex items-center justify-center"
         >
-          <ArrowLeftIcon className="w-4 h-4 mr-2" />{" "}
+          <ArrowLeftIcon className="w-4 h-4 mr-2" />
           <span>Back to options</span>
         </button>
       </div>
